@@ -11,7 +11,7 @@ CREATE TABLE content.film_workmovie (
     title         TEXT,
     description   TEXT,
     creation_date DATE,
-    certificate   TEXT,
+--    certificate   TEXT,
     file_path     TEXT,
     rating        FLOAT,
     type          VARCHAR(20),
@@ -43,7 +43,7 @@ drop table content.person CASCADE;
 CREATE TABLE content.person (
     id         UUID PRIMARY KEY,
     full_name  VARCHAR(50),
-    birth_date DATE,
+--    birth_date DATE,
     created_at TIMESTAMP WITH TIME ZONE,
     updated_at TIMESTAMP WITH TIME ZONE
 );
