@@ -20,7 +20,7 @@ class FilmWorkMovie:
     title:         str
     description:   str
     creation_date: str
-    certificate:   str
+    # certificate:   str
     type:          str
     created_at:    datetime.datetime
     updated_at:    datetime.datetime
@@ -176,7 +176,7 @@ class SQLiteLoader:
                             title = temp[i][1],
                             description = temp[i][2],
                             creation_date =  temp[i][3],
-                            certificate =  temp[i][4],
+                            # certificate =  temp[i][4],
                             type = temp[i][6],
                             created_at = temp[i][7],
                             updated_at = temp[i][8],
@@ -205,6 +205,6 @@ def load_from_sqlite(connection: sqlite3.Connection, pg_conn: _connection):
 
 if __name__ == '__main__':
     print(datetime.datetime.now())
-    dsl = {'dbname': 'movies', 'user': 'postgres', 'password': 123, 'host': 'postgres', 'port': 5432}
+    dsl = {'dbname': 'postgres', 'user': 'postgres', 'password': 123, 'host': 'postgres', 'port': 5433}
     with sqlite3.connect('db.sqlite') as sqlite_conn, psycopg2.connect(**dsl, cursor_factory=DictCursor) as pg_conn:
         load_from_sqlite(sqlite_conn, pg_conn)
