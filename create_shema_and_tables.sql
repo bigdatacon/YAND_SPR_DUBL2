@@ -6,6 +6,8 @@ psql -U postgres
 
 --1.Попасть в plsql shell
 CREATE DATABASE movies;
+--CREATE DATABASE movies2;  - Это для докера в standalone
+
 
 \c movies;
 

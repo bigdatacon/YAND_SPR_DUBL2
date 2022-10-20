@@ -1,0 +1,7 @@
+#как создать докер контейнер
+docker run -d --rm \
+  --name postgres3 \
+  -p 5434:5432 \
+  -v "C:\dockerdatamy3":/var/lib/postgresql/data \
+  -e POSTGRES_PASSWORD=123 \
+   postgres:13
