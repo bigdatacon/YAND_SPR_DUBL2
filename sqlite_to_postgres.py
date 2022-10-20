@@ -79,7 +79,7 @@ class PostgresSaver:
                 datetime.datetime.now(), None, "movie", datetime.datetime.now(), datetime.datetime.now(), obj.rating
             )
             self.pg_cursor.execute(
-                """INSERT INTO content.film_workmovie (id, title, description, creation_date, certificate, 
+                """INSERT INTO content.film_workmovie (id, title, description, creation_date, 
                 type, created_at, updated_at, rating  )
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", to_insert
             )
@@ -114,9 +114,9 @@ class PostgresSaver:
             new_id = uuid.uuid4()
             person_old_and_new_ids.append({new_id: obj_actors.id})
 
-            to_insert = (new_id, obj_actors.full_name, obj_actors.created_at, obj_actors.updated_at, obj_actors.birth_date)
-            self.pg_cursor.execute("""INSERT INTO content.person (id, full_name, created_at, updated_at, birth_date )
-                VALUES (%s, %s, %s, %s, %s)""", to_insert)
+            to_insert = (new_id, obj_actors.full_name, obj_actors.created_at, obj_actors.updated_at)
+            self.pg_cursor.execute("""INSERT INTO content.person (id, full_name, created_at, updated_at )
+                VALUES (%s, %s, %s, %s)""", to_insert)
 
 
         for person_film_work in data['person_film_work']:
@@ -188,7 +188,7 @@ class SQLiteLoader:
                 elif table_name[0] == "genre_film_work":
                     data[table_name[0]].append(Genre_film_work(film_work_id=temp[i][1],id=temp[i][0], genre_id=temp[i][2], created_at=temp[i][3]))
                 elif table_name[0] == "person":
-                    data[table_name[0]].append(Person(full_name=temp[i][1], id=temp[i][0],birth_date=None, created_at=temp[i][2], updated_at=temp[i][3]))
+                    data[table_name[0]].append(Person(full_name=temp[i][1], id=temp[i][0], created_at=temp[i][2], updated_at=temp[i][3]))
                 elif table_name[0] == "person_film_work":
                     data[table_name[0]].append(Person_film_work(film_work_id=temp[i][1], id=temp[i][0], person_id=temp[i][2], role=temp[i][3], created_at=temp[i][4]))
                 i += 1
