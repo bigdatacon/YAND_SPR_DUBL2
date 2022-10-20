@@ -5,3 +5,7 @@ docker run -d --rm \
   -v "C:\dockerdatamy3":/var/lib/postgresql/data \
   -e POSTGRES_PASSWORD=123 \
    postgres:13
+
+
+user = root2
+password = link1789
