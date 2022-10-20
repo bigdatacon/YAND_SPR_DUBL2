@@ -23,30 +23,7 @@ class FilmWorkType(models.TextChoices):
     MOVIE = 'movie', _('movie')
     TV_SHOW = 'tv_show', _('TV Show')
 
-class FilmWorkMovie(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(_('Название'), max_length=255)
-    description = models.TextField(_('Описание'), blank=True, null=True)
-    creation_date = models.DateField(_('Дата создания'), blank=True, null=True)
-    file_path = models.FileField(_('Путь к файлу'), upload_to='film_works/')
-    rating = models.FloatField(
-        _('Рейтинг'),
-        validators=[MinValueValidator(0), MaxValueValidator(10)],
-        blank=True, null=True
-    )
-    type = models.CharField(_('Тип'), max_length=20, choices=FilmWorkType.choices)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    # genres = models.ManyToManyField(Genre, through='GenreFilmWork', verbose_name=_('Жанры'))
-    # person = models.ManyToManyField(Person, through='PersonFilmWork', verbose_name=_('Персоны'))
-    genres = models.ManyToManyField(Genre, through='GenreFilmWork', verbose_name=_('Жанры'), related_name='filmworks')
-    persons = models.ManyToManyField(Person, through='PersonFilmWork', verbose_name=_('Персоны'), related_name='filmworks')
 
-    class Meta:
-        verbose_name = _('Кинопроизведение')
-        verbose_name_plural = _('Кинопроизведения')
-        db_table = "film_workmovie"
-        managed = False
 
 class Genre(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -112,7 +89,30 @@ class PersonFilmWork(models.Model):
         return f"{self.role}"
 
 
+class FilmWorkMovie(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(_('Название'), max_length=255)
+    description = models.TextField(_('Описание'), blank=True, null=True)
+    creation_date = models.DateField(_('Дата создания'), blank=True, null=True)
+    file_path = models.FileField(_('Путь к файлу'), upload_to='film_works/')
+    rating = models.FloatField(
+        _('Рейтинг'),
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        blank=True, null=True
+    )
+    type = models.CharField(_('Тип'), max_length=20, choices=FilmWorkType.choices)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    # genres = models.ManyToManyField(Genre, through='GenreFilmWork', verbose_name=_('Жанры'))
+    # person = models.ManyToManyField(Person, through='PersonFilmWork', verbose_name=_('Персоны'))
+    genres = models.ManyToManyField(Genre, through='GenreFilmWork', verbose_name=_('Жанры'), related_name='filmworks')
+    persons = models.ManyToManyField(Person, through='PersonFilmWork', verbose_name=_('Персоны'), related_name='filmworks')
 
+    class Meta:
+        verbose_name = _('Кинопроизведение')
+        verbose_name_plural = _('Кинопроизведения')
+        db_table = "film_workmovie"
+        managed = False
 
 
 
