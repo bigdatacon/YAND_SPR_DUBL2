@@ -3,7 +3,7 @@ import psycopg2
 import uuid
 import io
 
-import time
+
 import datetime
 from datetime import datetime
 import datetime
