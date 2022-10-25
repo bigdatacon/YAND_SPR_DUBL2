@@ -6,8 +6,11 @@ services:
     container_name: postgres_movies2
     env_file:
       - db.env
+#    volumes:
+#      - ./pgdata:/var/lib/postgresql/data
+    #добавляю отдельный volume чтобы папка с базой была переносима
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - db_volume:/var/lib/postgresql/dat
     ports:
       - "5433:5432"
     networks:
@@ -64,7 +67,8 @@ services:
 #      - postgres
 #      - elastic
 #
-#volumes:
+volumes:
+  db_volume:
 #  static_volume:
 
 networks:
