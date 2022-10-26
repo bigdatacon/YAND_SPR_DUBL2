@@ -224,8 +224,8 @@ if __name__ == '__main__':
     # dsl = {'dbname': 'postgres', 'user': 'postgres', 'password': 'postgres', 'host': 'postgres', 'port': 5433}
     # dsl = {'dbname': 'movies', 'user': 'postgres', 'password': 'postgres', 'host': 'postgres', 'port': 5432}
     """то что ниже работает для докера через билд"""
-    # dsl = {'dbname': 'movies', 'user': 'postgres', 'password': 'postgres', 'host': '127.0.0.1', 'port': 5433}
+    dsl = {'dbname': 'movies', 'user': 'postgres', 'password': 'postgres', 'host': '127.0.0.1', 'port': 5433}
     """то что ниже работает для докера через файл rundocker"""
-    dsl = {'dbname': 'movies2', 'user': 'postgres', 'password': '123', 'host': '127.0.0.1', 'port': 5434}
+    # dsl = {'dbname': 'movies2', 'user': 'postgres', 'password': '123', 'host': '127.0.0.1', 'port': 5433}
     with sqlite3.connect('db.sqlite') as sqlite_conn, psycopg2.connect(**dsl, cursor_factory=DictCursor) as pg_conn:
         load_from_sqlite(sqlite_conn, pg_conn)

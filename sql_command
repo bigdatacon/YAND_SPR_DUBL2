@@ -10,3 +10,7 @@ CREATE DATABASE movies;
 
 
 \c movies;
+
+
+#команда для автоматического создания таблиц - вводится в командной строке системы или терминале
+psql --username=postgres --host=127.0.0.1 --port=5433 postgres < create_schema_and_tables.sql
