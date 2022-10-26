@@ -10,6 +10,9 @@ docker run -d --rm \
 user = root2
 password = link1789
 
+user = root3
+password = root3
+
 -- для конвертера
 user = root
 password = 123

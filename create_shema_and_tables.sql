@@ -1,3 +1,15 @@
+-- зайти внутрь контейнера
+docker exec -it postgres_movies2 bash
+
+-- войти в plsql shell
+psql -U postgres
+
+--1.Попасть в plsql shell
+CREATE DATABASE movies;
+--CREATE DATABASE movies2;  - Это для докера в standalone
+
+
+\c movies;
 
 
 CREATE SCHEMA content;
