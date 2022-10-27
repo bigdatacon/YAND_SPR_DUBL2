@@ -196,11 +196,11 @@ class SQLiteLoader:
                 elif table_name[0] == "genre":
                     data[table_name[0]].append(Genre(name=temp[i][1],id=temp[i][0], description=temp[i][2], created_at=temp[i][3], updated_at=temp[i][4]))
                 elif table_name[0] == "genre_film_work":
-                    data[table_name[0]].append(Genre_film_work(film_work_id=temp[i][1],id=temp[i][0], genre_id=temp[i][2], created_at=temp[i][3]))
+                    data[table_name[0]].append(Genre_film_work(film_work=temp[i][1],id=temp[i][0], genre=temp[i][2], created_at=temp[i][3]))
                 elif table_name[0] == "person":
                     data[table_name[0]].append(Person(full_name=temp[i][1], id=temp[i][0], created_at=temp[i][2], updated_at=temp[i][3]))
                 elif table_name[0] == "person_film_work":
-                    data[table_name[0]].append(Person_film_work(film_work_id=temp[i][1], id=temp[i][0], person_id=temp[i][2], role=temp[i][3], created_at=temp[i][4]))
+                    data[table_name[0]].append(Person_film_work(film_work=temp[i][1], id=temp[i][0], person=temp[i][2], role=temp[i][3], created_at=temp[i][4]))
                 i += 1
         return data
 

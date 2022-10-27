@@ -2,3 +2,4 @@
 
 ### postgres_database ###
 ./pgdata
+__pycache__/
