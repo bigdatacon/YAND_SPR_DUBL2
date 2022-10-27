@@ -4,8 +4,12 @@ from django.http import JsonResponse, HttpResponse
 from .models import FilmWorkMovie, GenreFilmWork, Genre, PersonFilmWork, Person
 from rest_framework import viewsets
 from rest_framework import permissions
+from .serializers import FilmWorkMovieSerializer
 
 
+class FilmWorkMovieViewSet(viewsets.ModelViewSet):
+    queryset = FilmWorkMovie.objects.all()
+    serializer_class = FilmWorkMovieSerializer
 
 # Create your views here.
 def index(request):
