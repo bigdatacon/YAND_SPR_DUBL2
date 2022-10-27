@@ -8,10 +8,21 @@ from .serializers import FilmWorkMovieSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 
 class FilmWorkMovieViewSet(viewsets.ModelViewSet):
     queryset = FilmWorkMovie.objects.all()
     serializer_class = FilmWorkMovieSerializer
+
+
+
+
+
+
 
 @csrf_exempt
 def filmworkmovie_list(request):
@@ -30,6 +41,32 @@ def filmworkmovie_list(request):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+#вот здесь пример с теорие https://www.django-rest-framework.org/tutorial/3-class-based-views/
+
+class MovieList(APIView):
+    """
+    List all movies, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        filmworkmovie = FilmWorkMovie.objects.all()
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = FilmWorkMovieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def return_films_rating_over(self, request, format=None):
+        filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return Response(serializer.data)
+
+
 
 
 # Create your views here.

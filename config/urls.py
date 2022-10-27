@@ -6,7 +6,9 @@ from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from movies.models import FilmWorkMovie
-from movies.views import FilmWorkMovieViewSet
+from movies.views import FilmWorkMovieViewSet, MovieList, filmworkmovie_list
+from movies import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -22,4 +24,6 @@ urlpatterns = [
     path('film_work_movie_view_set/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('filmworkmovie_list/', views.filmworkmovie_list),
+
+    path('filmworkmovie_view/', views.MovieList.as_view()),
 ]

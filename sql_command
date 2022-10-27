@@ -21,3 +21,28 @@ psql --username=postgres --host=127.0.0.1 --port=5433 postgres < create_schema_a
 python manage.py shell
 from movies.models import FilmWorkMovie
 ilmWorkMovie.objects.all()
+
+
+#отфильтровать по слову (например по названию фильма):
+ FilmWorkMovie.objects.filter(description__startswith='Star')
+
+ !!!!!! Важно строка ниже почему то не работает
+ FilmWorkMovie.objects.get(description__contains='War') - не работает !
+
+#отфильтровать по параметру(в примере рейтинг) - но тут равенство , а больше меньше пока нет:
+q_ids = [8]
+FilmWorkMovie.objects.filter(rating__in=q_ids)
+
+#фильтр работает тольок на знак равно и не рабоатет на > или <
+FilmWorkMovie.objects.filter(rating=8)
+
+# по документации - это все с рейтинггом больше 8, но как найти меньше такого то значения?
+FilmWorkMovie.objects.filter(rating__gt=8)
+
+#меньше или вот правильно
+FilmWorkMovie.objects.filter(rating__lt=8)
+меньше или равно
+FilmWorkMovie.objects.filter(rating__lte=8)
+больша или равно
+FilmWorkMovie.objects.filter(rating__gte=8)
+
