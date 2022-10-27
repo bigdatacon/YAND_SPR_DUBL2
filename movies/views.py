@@ -1,0 +1,84 @@
+from django.shortcuts import render
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse
+from .models import FilmWorkMovie, GenreFilmWork, Genre, PersonFilmWork, Person
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import FilmWorkMovieSerializer
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+class FilmWorkMovieViewSet(viewsets.ModelViewSet):
+    queryset = FilmWorkMovie.objects.all()
+    serializer_class = FilmWorkMovieSerializer
+
+
+
+@csrf_exempt
+def filmworkmovie_list(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        filmworkmovie = FilmWorkMovie.objects.all()
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = FilmWorkMovieSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
+
+#вот здесь пример с теорие https://www.django-rest-framework.org/tutorial/3-class-based-views/
+
+class MovieList(APIView):
+    """
+    List all movies, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        filmworkmovie = FilmWorkMovie.objects.all()
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = FilmWorkMovieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def return_films_rating_over(self, request, format=None):
+        filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return Response(serializer.data)
+
+
+
+
+# Create your views here.
+def index(request):
+    data = []
+    for film in FilmWorkMovie.objects.all():
+        film_info = {
+            'uuid': film.id,
+            'title': film.title,
+            'description': film.description,
+            'rating': film.rating,
+            # 'genres': film.genres,
+            # 'persons': film.persons,
+        }
+        # for genre in filmworks.genres.all()
+        # for genre in name.filmworks.all():
+        #     film_info['files'].append(furl.file_path.url)
+        data.append(film_info)
+    return JsonResponse({'results': data})

@@ -1,0 +1,48 @@
+-- зайти внутрь контейнера
+docker exec -it postgres_movies2 bash
+
+-- войти в plsql shell
+psql -U postgres
+
+--1.Попасть в plsql shell
+CREATE DATABASE movies;
+--CREATE DATABASE movies2;  - Это для докера в standalone
+
+
+\c movies;
+
+
+#команда для автоматического создания таблиц - вводится в командной строке системы или терминале  - на винде не работает, нужно данные в postgres переливать через стандартный запуска
+файл sqlite_to_postgres
+psql --username=postgres --host=127.0.0.1 --port=5433 postgres < create_schema_and_tables.sql
+
+
+#получить доступ к данным базы (все данные одной таблицы на примере)
+python manage.py shell
+from movies.models import FilmWorkMovie
+ilmWorkMovie.objects.all()
+
+
+#отфильтровать по слову (например по названию фильма):
+ FilmWorkMovie.objects.filter(description__startswith='Star')
+
+ !!!!!! Важно строка ниже почему то не работает
+ FilmWorkMovie.objects.get(description__contains='War') - не работает !
+
+#отфильтровать по параметру(в примере рейтинг) - но тут равенство , а больше меньше пока нет:
+q_ids = [8]
+FilmWorkMovie.objects.filter(rating__in=q_ids)
+
+#фильтр работает тольок на знак равно и не рабоатет на > или <
+FilmWorkMovie.objects.filter(rating=8)
+
+# по документации - это все с рейтинггом больше 8, но как найти меньше такого то значения?
+FilmWorkMovie.objects.filter(rating__gt=8)
+
+#меньше или вот правильно
+FilmWorkMovie.objects.filter(rating__lt=8)
+меньше или равно
+FilmWorkMovie.objects.filter(rating__lte=8)
+больша или равно
+FilmWorkMovie.objects.filter(rating__gte=8)
+
