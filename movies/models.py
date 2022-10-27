@@ -43,8 +43,8 @@ class Genre(models.Model):
 
 class GenreFilmWork(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    film_work_id = models.ForeignKey('FilmWorkMovie', on_delete=models.CASCADE, default=None)
-    genre_id = models.ForeignKey('Genre', on_delete=models.CASCADE, default=None)
+    film_work = models.ForeignKey('FilmWorkMovie', on_delete=models.CASCADE, default=None)
+    genre = models.ForeignKey('Genre', on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -74,8 +74,8 @@ class Person(models.Model):
 
 class PersonFilmWork(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    film_work_id = models.ForeignKey('FilmWorkMovie', on_delete=models.CASCADE, default=None)
-    person_id = models.ForeignKey('Person', on_delete=models.CASCADE, default=None)
+    film_work = models.ForeignKey('FilmWorkMovie', on_delete=models.CASCADE, default=None)
+    person = models.ForeignKey('Person', on_delete=models.CASCADE, default=None)
     role = models.CharField(_('роль'), max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
