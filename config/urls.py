@@ -19,5 +19,7 @@ urlpatterns = [
     path('film_workmovie', views.index, name='film_workmovie'),
 
     path('', include(router.urls)),
-    path('film_work_movie_view_set/', include('rest_framework.urls', namespace='rest_framework'))
+    path('film_work_movie_view_set/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('filmworkmovie_list/', views.filmworkmovie_list),
 ]

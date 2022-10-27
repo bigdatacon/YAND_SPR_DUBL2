@@ -9,4 +9,5 @@ django-model-utils==4.2.0
 djangorestframework==3.13.1
 markdown       # Markdown support for the browsable API.
 django-filter  # Filtering support
+django-session-csrf
 

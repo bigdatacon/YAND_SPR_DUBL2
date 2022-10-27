@@ -5,11 +5,32 @@ from .models import FilmWorkMovie, GenreFilmWork, Genre, PersonFilmWork, Person
 from rest_framework import viewsets
 from rest_framework import permissions
 from .serializers import FilmWorkMovieSerializer
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
 
 
 class FilmWorkMovieViewSet(viewsets.ModelViewSet):
     queryset = FilmWorkMovie.objects.all()
     serializer_class = FilmWorkMovieSerializer
+
+@csrf_exempt
+def filmworkmovie_list(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'GET':
+        filmworkmovie = FilmWorkMovie.objects.all()
+        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = FilmWorkMovieSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+
 
 # Create your views here.
 def index(request):
