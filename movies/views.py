@@ -20,10 +20,6 @@ class FilmWorkMovieViewSet(viewsets.ModelViewSet):
 
 
 
-
-
-
-
 @csrf_exempt
 def filmworkmovie_list(request):
     """
