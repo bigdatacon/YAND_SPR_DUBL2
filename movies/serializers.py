@@ -7,7 +7,7 @@ from .models import FilmWorkMovie, Genre, Person
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ['id', 'title', 'description']
+        fields = ['id', 'name', 'description']
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
