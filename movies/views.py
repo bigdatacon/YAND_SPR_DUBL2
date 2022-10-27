@@ -74,8 +74,8 @@ def index(request):
             'title': film.title,
             'description': film.description,
             'rating': film.rating,
-            'genres': [{'name': genre.name} for genre in film.genres.all()],
-            'persons': [{'full_name': person.full_name} for person in film.persons.all()]
+            'genres': [{'id': genre.id, 'name': genre.name} for genre in film.genres.all()],
+            'persons': [{'id': person.id,  'full_name': person.full_name} for person in film.persons.all()]
             # 'genres': film.genres,
             # 'persons': film.persons,
         }
