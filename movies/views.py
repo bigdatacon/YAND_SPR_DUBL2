@@ -74,11 +74,15 @@ def index(request):
             'title': film.title,
             'description': film.description,
             'rating': film.rating,
+            'genres': [{'name': genre.name} for genre in film.genres.all()],
+            'persons': [{'full_name': person.full_name} for person in film.persons.all()]
             # 'genres': film.genres,
             # 'persons': film.persons,
         }
         # for genre in filmworks.genres.all()
         # for genre in name.filmworks.all():
         #     film_info['files'].append(furl.file_path.url)
+
+        # 'genres': [{'id': genre.id, 'name': genre.name} for genre in film.genres.all()]
         data.append(film_info)
     return JsonResponse({'results': data})
