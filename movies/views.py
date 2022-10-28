@@ -42,6 +42,7 @@ def filmworkmovie_list(request):
 #вот здесь пример с теорие https://www.django-rest-framework.org/tutorial/3-class-based-views/
 
 class MovieList(APIView):
+    permission_classes = [permissions.AllowAny]
     """
     List all movies, or create a new snippet.
     """
@@ -58,9 +59,13 @@ class MovieList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def return_films_rating_over(self, request, format=None):
-        filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
-        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
-        return Response(serializer.data)
+        if request.method == 'GET' and request.min_rating:
+            filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
+            serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
