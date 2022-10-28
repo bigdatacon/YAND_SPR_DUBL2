@@ -46,10 +46,19 @@ class MovieList(APIView):
     """
     List all movies, or create a new snippet.
     """
+    # def get(self, request, format=None):
+    #     filmworkmovie = FilmWorkMovie.objects.all()
+    #     serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+    #     return Response(serializer.data)
+
     def get(self, request, format=None):
-        filmworkmovie = FilmWorkMovie.objects.all()
-        serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
-        return Response(serializer.data)
+        if request.method == 'GET' and request.min_rating:
+                filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
+                serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+                return Response(serializer.data)
+        else:
+            # return Response(status=status.HTTP_400_BAD_REQUEST)
+            return False #пишу так чтобы убедиться что не падает из за  Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, format=None):
         serializer = FilmWorkMovieSerializer(data=request.data)
@@ -58,13 +67,13 @@ class MovieList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def return_films_rating_over(self, request, format=None):
-        if request.method == 'GET' and request.min_rating:
-            filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
-            serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    # def return_films_rating_over(self, request, format=None):
+    #     if request.method == 'GET' and request.min_rating:
+    #         filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
+    #         serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+    #         return Response(serializer.data)
+    #     else:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
