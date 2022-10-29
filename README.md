@@ -3,6 +3,7 @@
 
 #running
 docker-compose build
+
 docker-compose up
 
 проверить работу api через файл api_test
