@@ -28,6 +28,7 @@ ilmWorkMovie.objects.all()
 
  !!!!!! Важно строка ниже почему то не работает
  FilmWorkMovie.objects.get(description__contains='War') - не работает !
+ FilmWorkMovie.objects.filter(description__contains='War')
 
 #отфильтровать по параметру(в примере рейтинг) - но тут равенство , а больше меньше пока нет:
 q_ids = [8]
@@ -45,4 +46,12 @@ FilmWorkMovie.objects.filter(rating__lt=8)
 FilmWorkMovie.objects.filter(rating__lte=8)
 больша или равно
 FilmWorkMovie.objects.filter(rating__gte=8)
+
+# передача рейтинга в get запрос
+http://127.0.0.1:8080/filmworkmovie_view/?min_rating=8
+Или
+import requests
+res = requests.get("http://127.0.0.1:8080/filmworkmovie_view/?min_rating=8")
+
+
 

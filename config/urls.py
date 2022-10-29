@@ -6,7 +6,7 @@ from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from movies.models import FilmWorkMovie
-from movies.views import FilmWorkMovieViewSet, MovieList, filmworkmovie_list
+from movies.views import FilmWorkMovieViewSet, MovieList, filmworkmovie_list, index
 from movies import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
@@ -26,4 +26,8 @@ urlpatterns = [
     path('filmworkmovie_list/', views.filmworkmovie_list),
 
     path('filmworkmovie_view/', views.MovieList.as_view()),
+
+    path('index/', views.index),
+
+
 ]

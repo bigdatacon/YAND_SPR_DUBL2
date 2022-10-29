@@ -7,12 +7,14 @@ from .models import FilmWorkMovie, Genre, Person
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = ['id', 'name', 'description']
+        # fields = ['id', 'name', 'description']
+        fields = ['name']
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ['id', 'full_name']
+        # fields = ['id', 'full_name']
+        fields = ['full_name']
 
 
 class FilmWorkMovieSerializer(serializers.HyperlinkedModelSerializer):
