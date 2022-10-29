@@ -52,10 +52,12 @@ class MovieList(APIView):
     #     return Response(serializer.data)
 
     def get(self, request, format=None):
-        if request.method == 'GET' and request.min_rating:
-                filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=request.data)
-                serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
-                return Response(serializer.data)
+        if request.method == 'GET' and 'min_rating' in request.GET:
+            # Параметр min_rating был передан
+            min_rating = float(request.GET['min_rating'])
+            filmworkmovie = FilmWorkMovie.objects.filter(rating__gte=min_rating)
+            serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+            return Response(serializer.data)
         else:
             # return Response(status=status.HTTP_400_BAD_REQUEST)
             return False #пишу так чтобы убедиться что не падает из за  Response(status=status.HTTP_400_BAD_REQUEST)

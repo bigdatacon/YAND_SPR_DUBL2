@@ -46,3 +46,11 @@ FilmWorkMovie.objects.filter(rating__lte=8)
 больша или равно
 FilmWorkMovie.objects.filter(rating__gte=8)
 
+# передача рейтинга в get запрос
+http://127.0.0.1:8080/filmworkmovie_view/?min_rating=8
+Или
+import requests
+res = requests.get("http://127.0.0.1:8080/filmworkmovie_view/?min_rating=8")
+
+
+
