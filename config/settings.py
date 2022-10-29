@@ -89,8 +89,16 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'movies'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
-        'PORT': os.environ.get('DB_PORT', 5433),
+
+        #До запуска джанго через докер хост явно и порт базы
+        # 'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
+        # 'PORT': os.environ.get('DB_PORT', 5433),
+
+        #после запуска джанго через докер
+        # в докере имя порта равно имени сервиса с постгре, порт 5432 - стандартый порт который у постгре в докер-контейнере
+        #имя базы в db.env не movies но через sqlite_to_postgres наполняется база movies (вторая ) и все работа с ней
+        'HOST': os.environ.get('DB_HOST', 'postgres'),
+        'PORT': os.environ.get('DB_PORT', 5432),
         'OPTIONS': {
            'options': '-c search_path=public,content'
         }
