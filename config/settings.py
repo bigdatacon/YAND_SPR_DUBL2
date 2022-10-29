@@ -95,6 +95,7 @@ DATABASES = {
         # 'PORT': os.environ.get('DB_PORT', 5433),
 
         #после запуска джанго через докер
+        # в докере имя порта равно имени сервиса с постгре, порт 5432 - стандартый порт который у постгре в докер-контейнере
         'HOST': os.environ.get('DB_HOST', 'postgres'),
         'PORT': os.environ.get('DB_PORT', 5432),
         'OPTIONS': {
