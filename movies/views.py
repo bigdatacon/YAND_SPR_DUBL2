@@ -59,8 +59,7 @@ class MovieList(APIView):
             serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
             return Response(serializer.data)
         else:
-            # return Response(status=status.HTTP_400_BAD_REQUEST)
-            return False #пишу так чтобы убедиться что не падает из за  Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, format=None):
         serializer = FilmWorkMovieSerializer(data=request.data)
