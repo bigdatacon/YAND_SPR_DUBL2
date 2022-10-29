@@ -60,7 +60,7 @@ class MovieList(APIView):
             return Response(serializer.data)
         elif request.method == 'GET' and 'actor' in request.GET:
             # Параметр min_rating был передан
-            actor = request.GET['actor']
+            actor =  Person.objects.get(full_name=request.GET['actor'])
             filmworkmovie =  actor.filmworks.all()
             # filmworkmovie = FilmWorkMovie.persons.filmworks.filter(persons.filmworks__contains = actor)
             serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
