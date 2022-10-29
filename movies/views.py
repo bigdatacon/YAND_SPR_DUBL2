@@ -65,6 +65,13 @@ class MovieList(APIView):
             # filmworkmovie = FilmWorkMovie.persons.filmworks.filter(persons.filmworks__contains = actor)
             serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
             return Response(serializer.data)
+        elif request.method == 'GET' and 'genre' in request.GET:
+            # Параметр min_rating был передан
+            actor =  Genre.objects.get(name=request.GET['genre'])
+            filmworkmovie =  actor.filmworks.all()
+            # filmworkmovie = FilmWorkMovie.persons.filmworks.filter(persons.filmworks__contains = actor)
+            serializer = FilmWorkMovieSerializer(filmworkmovie, many=True)
+            return Response(serializer.data)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
