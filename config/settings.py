@@ -89,8 +89,12 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'movies'),
         'USER': os.environ.get('DB_USER', 'postgres'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
+
+        #До запуска джанго через докер хост явно и порт базы
         # 'HOST': os.environ.get('DB_HOST', '127.0.0.1'),
         # 'PORT': os.environ.get('DB_PORT', 5433),
+
+        #после запуска джанго через докер
         'HOST': os.environ.get('DB_HOST', 'postgres'),
         'PORT': os.environ.get('DB_PORT', 5432),
         'OPTIONS': {
