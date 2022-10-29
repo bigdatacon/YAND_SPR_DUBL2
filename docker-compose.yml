@@ -25,6 +25,8 @@ services:
       - static_volume:/data/static
     networks:
       - movies_network2
+    ports:
+      - "8080:8080"
     command: python manage.py runserver 0.0.0.0:8080
     depends_on:
       - postgres
