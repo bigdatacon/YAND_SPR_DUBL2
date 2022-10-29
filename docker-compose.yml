@@ -16,18 +16,18 @@ services:
     networks:
       - movies_network2
 
-#  django:
-#    build:
-#      context: movies_admin
-#      dockerfile: Dockerfile
-#    container_name: django_movies
-#    volumes:
-#      - static_volume:/data/static
-#    networks:
-#      - movies_network
-#    command: python manage.py runserver 0.0.0.0:8000
-#    depends_on:
-#      - postgres
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_movies2
+    volumes:
+      - static_volume:/data/static
+    networks:
+      - movies_network2
+    command: python manage.py runserver 0.0.0.0:8080
+    depends_on:
+      - postgres
 #
 #  nginx:
 #    image: nginx:1.19.2
@@ -69,7 +69,7 @@ services:
 #
 volumes:
   db_volume:
-#  static_volume:
+  static_volume:
 
 networks:
   movies_network2:
