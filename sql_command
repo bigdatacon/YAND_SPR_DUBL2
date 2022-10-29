@@ -28,6 +28,7 @@ ilmWorkMovie.objects.all()
 
  !!!!!! Важно строка ниже почему то не работает
  FilmWorkMovie.objects.get(description__contains='War') - не работает !
+ FilmWorkMovie.objects.filter(description__contains='War')
 
 #отфильтровать по параметру(в примере рейтинг) - но тут равенство , а больше меньше пока нет:
 q_ids = [8]
