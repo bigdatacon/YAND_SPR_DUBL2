@@ -16,7 +16,7 @@
 
 #cоздать индекс в иластик через ipython
 import requests
-ans = requests.put("http://127.0.0.1:9200/table", {
+ans = requests.put("http://127.0.0.1:9200/table",  {
     "mappings": {
         "properties": {
             "text_field": {"type": "keyword"},
@@ -26,7 +26,7 @@ ans = requests.put("http://127.0.0.1:9200/table", {
 } )
 
 #создать новую запись в эластик
-ans = requests.post("http://127.0.0.1:9200/table/_doc/", json = {
+ans = requests.post("http://127.0.0.1:9200/table/_doc/",  json = {
     "text_field": "my pretty text",
     "number": 15
     }

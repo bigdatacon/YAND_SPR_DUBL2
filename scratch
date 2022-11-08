@@ -1,0 +1,39 @@
+-- что ниже работает, но заменил таблицу на table2 так как table уже существует
+curl -XPUT http://127.0.0.1:9200/table2 -H 'Content-Type: application/json'
+ -d '{
+    "mappings": {
+        "properties": {
+            "text_field": {"type": "keyword"},
+            "number": {"type": "long"}
+        }
+    }
+}'
+
+
+-- через ipython не работает но работает что выше
+import requests
+headers = {'Content-Type': 'application/json'}
+ans = requests.put("http://127.0.0.1:9200/table",  {
+    "mappings": {
+        "properties": {
+            "text_field": {"type": "keyword"},
+            "number": {"type": "long"}
+        }
+    }
+}, headers=headers )
+
+
+--2 вставка данных через curl - не работает
+curl -XPOST http://127.0.0.1:9200/table2/_doc/ -H 'Content-Type: application/json' -d'
+{
+    "text_field": "my pretty text",
+    "number": 15
+}'
+
+--2 пробую вставку через ipython - так работает и без указания headers 'Content-Type: application/json'
+ans = requests.post("http://127.0.0.1:9200/table2/_doc/",  json = {
+    "text_field": "my pretty text",
+    "number": 15
+    }
+)
+
