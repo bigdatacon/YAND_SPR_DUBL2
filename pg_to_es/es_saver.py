@@ -4,7 +4,9 @@ from elasticsearch import Elasticsearch, helpers
 from typing import List
 logger = logging.getLogger(__name__)
 
-
+from settings.settings import Settings
+from settings.schemes import Schemes
+from resources import backoff
 
 
 class ESSaver(Settings, Schemes):
