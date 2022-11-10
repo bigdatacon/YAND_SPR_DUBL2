@@ -34,27 +34,9 @@ class ESSaver(Settings, Schemes):
     def save_one(self, doc: dict, index: str):
         self.__get_connection().index(index=index, id=doc['id'], document=doc)
 
-    def test_save_one(self, doc: dict, index: str):
-        try:
-            self.test_get_connection().index(index=index,  document=doc)
-        except Exception as e:
-            print(f' except in test_save_one : {e.args}')
-
-    def test_read_index(self, index):
-        ans = self.test_get_connection().search(index=index)
-        return ans
-
-
     @backoff()
     def save_many(self, docs: List[dict], index: str):
         helpers.bulk(self.__get_connection(), [{'_index': index, '_id': doc['id'], **doc} for doc in docs])
-
-
-    def test_get_connection(self):
-        host_link = self.__get_es_link().replace('elastic', '127.0.0.1')
-        if not self.__es_con:
-            self.__es_con = Elasticsearch(host_link)
-        return self.__es_con
 
     def __get_connection(self):
         if not self.__es_con:
@@ -65,6 +47,35 @@ class ESSaver(Settings, Schemes):
         es_params = dict(self.get_settings().film_work_es)
         return f"http://{es_params['host']}:{es_params['port']}"
 
+    @backoff()
+    def create_index(self, index: str):
+        scheme = self.get_schemes()[self.SCHEMES[index]]
+        logger.debug(f"this scheme: {scheme}")
+        resp = requests.put("{}/{}".format(self.__get_es_link(), index), json=scheme)
+        if resp.status_code != 200:
+            logger.warning(f"Ошибка создания поискового индекса: {index}")
+
+    """block of test functions for 127.0.0.1 поскольку с хост elastic не работает, нужно именно 127.0.0.1 , функции повторяют 
+    функционал основных функций"""
+    def test_save_one(self, doc: dict, index: str):
+        try:
+            self.test_get_connection().index(index=index,  document=doc)
+        except Exception as e:
+            print(f' except in test_save_one : {e.args}')
+
+    #quick read index
+    def test_read_index(self, index):
+        ans = self.test_get_connection().search(index=index)
+        return ans
+
+    def test_save_many(self, docs: List[dict], index: str):
+        helpers.bulk(self.test_get_connection(), [{'_index': index,  **doc} for doc in docs])
+
+    def test_get_connection(self):
+        host_link = self.__get_es_link().replace('elastic', '127.0.0.1')
+        if not self.__es_con:
+            self.__es_con = Elasticsearch(host_link)
+        return self.__es_con
 
     def test_get_scheme(self, index: str):
         scheme = self.get_schemes()[self.SCHEMES[index]]
@@ -79,7 +90,7 @@ class ESSaver(Settings, Schemes):
         else:
             logger.warning(f"DELETE индекс: {resp.status_code, index}")
 
-    @backoff()
+    # @backoff()
     def test_create_index_127(self, index: str):
         scheme = self.get_schemes()[self.SCHEMES[index]]
         host_link = self.__get_es_link().replace('elastic', '127.0.0.1')
@@ -102,16 +113,6 @@ class ESSaver(Settings, Schemes):
             logger.warning(f"Create индекс: {resp.status_code, index}")
 
 
-
-    @backoff()
-    def create_index(self, index: str):
-        scheme = self.get_schemes()[self.SCHEMES[index]]
-        logger.debug(f"this scheme: {scheme}")
-        resp = requests.put("{}/{}".format(self.__get_es_link(), index), json=scheme)
-        if resp.status_code != 200:
-            logger.warning(f"Ошибка создания поискового индекса: {index}")
-
-
 if __name__ == '__main__':
     settings = Settings()
     # print(settings.get_settings())
@@ -126,6 +127,18 @@ if __name__ == '__main__':
     "text_field": "my pretty text test",
     "number": 111
     }
+
+    test_docs = [
+        {
+            "text_field": "my pretty text test2",
+            "number": 22
+        },
+        {
+            "text_field": "my pretty text test3",
+            "number": 33
+        }
+    ]
+
     # print(example.test_create_index_127(index))
     #2 delete index
     # print(example.test_delete_index(index))
@@ -140,7 +153,10 @@ if __name__ == '__main__':
     # print(example.test_save_one(test_data, index_test))
 
     #6 read index after insert data in point #
-    print(example.test_read_index(index_test))
+    # print(example.test_read_index(index_test))
+
+    #7 save_many for test index
+    # print(example.test_save_many(test_docs, index_test))
 
 
 
