@@ -29,5 +29,6 @@ class Settings:
         return self.__settings
 
 
-A = Settings()
-print(A.get_settings())
+if __name__ == '__main__':
+    A = Settings()
+    print(A.get_settings())
