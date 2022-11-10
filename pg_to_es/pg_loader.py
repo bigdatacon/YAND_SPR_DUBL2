@@ -34,4 +34,10 @@ if __name__ == '__main__':
     print(example._PGLoader__get_db_params())
     sql_string = 'select * from content.genre;'
     print(example._PGLoader__get_cursor())
+    # print(example.do_query(sql_string))
+    for i in example.do_query(sql_string):
+        # print(f' eto i : {i}')
+        for k,v in i.items():
+            print({k: v})
+
 
