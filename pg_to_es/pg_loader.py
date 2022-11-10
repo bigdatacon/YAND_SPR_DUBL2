@@ -33,11 +33,24 @@ if __name__ == '__main__':
     example =PGLoader()
     print(example._PGLoader__get_db_params())
     sql_string = 'select * from content.genre;'
+    # sql_string_long = """
+    #         SELECT DISTINCT
+    #             gfw.film_work_id AS film_work_id,
+    #             pfw.person_id AS person_id,
+    #             g.id AS genre_id,
+    #             g.updated_at
+    #         FROM content.genre g
+    #         LEFT JOIN content.genre_film_work gfw ON g.id = gfw.genre_id
+    #         LEFT JOIN content.film_workmovie fw ON gfw.film_work_id = fw.id
+    #         LEFT JOIN content.person_film_work pfw ON fw.id = pfw.film_work_id """
+
+    sql_string_long = """SELECT * 
+            from  content.film_workmovie fwm  join content.genre_film_work gfw ON fwm.genres = gfw.genre"""
     print(example._PGLoader__get_cursor())
-    # print(example.do_query(sql_string))
-    for i in example.do_query(sql_string):
-        # print(f' eto i : {i}')
-        for k,v in i.items():
-            print({k: v})
+    print(example.do_query(sql_string_long))
+    # for i in example.do_query(sql_string_long):
+    #     # print(f' eto i : {i}')
+    #     for k,v in i.items():
+    #         print({k: v})
 
 
