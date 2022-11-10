@@ -2,7 +2,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2 import DatabaseError
 
-from settings.settings import Settings
+from settings import Settings
 from resources import backoff
 
 
@@ -19,7 +19,7 @@ class PGLoader(Settings):
             self.__pg_con.close()
             self.__cursor = None
 
-    @backoff()
+    # @backoff()
     def __get_cursor(self):
         if not self.__cursor:
             self.__pg_con = psycopg2.connect(**self.__get_db_params())
@@ -28,3 +28,10 @@ class PGLoader(Settings):
 
     def __get_db_params(self):
         return dict(self.get_settings().film_work_pg)
+
+if __name__ == '__main__':
+    example =PGLoader()
+    print(example._PGLoader__get_db_params())
+    sql_string = 'select * from content.genre;'
+    print(example._PGLoader__get_cursor())
+
