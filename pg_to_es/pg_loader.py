@@ -44,8 +44,10 @@ if __name__ == '__main__':
     #         LEFT JOIN content.film_workmovie fw ON gfw.film_work_id = fw.id
     #         LEFT JOIN content.person_film_work pfw ON fw.id = pfw.film_work_id """
 
+    # sql_string_long = """SELECT *
+    #         from  content.film_workmovie fwm  join content.genre_film_work gfw ON fwm.genres = gfw.genre"""
     sql_string_long = """SELECT * 
-            from  content.film_workmovie fwm  join content.genre_film_work gfw ON fwm.genres = gfw.genre"""
+                from  content.film_workmovie """
     print(example._PGLoader__get_cursor())
     print(example.do_query(sql_string_long))
     # for i in example.do_query(sql_string_long):
