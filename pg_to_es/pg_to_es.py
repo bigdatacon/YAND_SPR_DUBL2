@@ -45,7 +45,7 @@ class PGtoES(PGLoader, ESSaver):
                 pfw.person_id AS person_id,
                 gfw.genre_id AS genre_id,
                 fw.updated_at
-            FROM content.film_work fw
+            FROM content.film_workmovie fw
             LEFT JOIN content.person_film_work pfw ON fw.id = pfw.film_work_id
             LEFT JOIN content.genre_film_work gfw ON fw.id = gfw.film_work_id
             WHERE fw.updated_at > '{}'
@@ -61,7 +61,7 @@ class PGtoES(PGLoader, ESSaver):
                 p.updated_at
             FROM content.person p
             LEFT JOIN content.person_film_work pfw ON p.id = pfw.person_id
-            LEFT JOIN content.film_work fw ON pfw.film_work_id = fw.id
+            LEFT JOIN content.film_workmovie fw ON pfw.film_work_id = fw.id
             LEFT JOIN content.genre_film_work gfw ON fw.id = gfw.film_work_id
             WHERE p.updated_at > '{}'
             ;""".format(last_updated)
@@ -76,7 +76,7 @@ class PGtoES(PGLoader, ESSaver):
                 g.updated_at
             FROM content.genre g
             LEFT JOIN content.genre_film_work gfw ON g.id = gfw.genre_id
-            LEFT JOIN content.film_work fw ON gfw.film_work_id = fw.id
+            LEFT JOIN content.film_workmovie fw ON gfw.film_work_id = fw.id
             LEFT JOIN content.person_film_work pfw ON fw.id = pfw.film_work_id
             WHERE g.updated_at > '{}'
             ;""".format(last_updated)
@@ -105,7 +105,7 @@ class PGtoES(PGLoader, ESSaver):
                 ARRAY_AGG(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'writer') AS writers_names,
                 ARRAY_AGG(DISTINCT jsonb_build_object('id', p.id, 'name', p.full_name)) FILTER (WHERE pfw.role = 'actor') AS actors,
                 ARRAY_AGG(DISTINCT jsonb_build_object('id', p.id, 'name', p.full_name)) FILTER (WHERE pfw.role = 'writer') AS writers
-            FROM content.film_work fw
+            FROM content.film_workmovie fw
             LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
             LEFT JOIN content.genre g ON g.id = gfw.genre_id
             LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
@@ -120,11 +120,10 @@ class PGtoES(PGLoader, ESSaver):
             SELECT
                 p.id,
                 p.full_name,
-                p.birth_date,
                 ARRAY_AGG(DISTINCT jsonb_build_object('id', fw.id, 'role', pfw.role, 'title', fw.title)) AS films
             FROM content.person p
             LEFT JOIN content.person_film_work pfw ON p.id = pfw.person_id
-            LEFT JOIN content.film_work fw ON pfw.film_work_id = fw.id
+            LEFT JOIN content.film_workmovie fw ON pfw.film_work_id = fw.id
             WHERE p.id in ('{}')
             GROUP BY p.id;
             """.format("','".join(ids))
@@ -139,7 +138,7 @@ class PGtoES(PGLoader, ESSaver):
                 ARRAY_AGG(DISTINCT jsonb_build_object('id', fw.id, 'title', fw.title)) AS films
             FROM content.genre g
             LEFT JOIN content.genre_film_work gfw ON gfw.genre_id = g.id
-            LEFT JOIN content.film_work fw ON gfw.film_work_id = fw.id
+            LEFT JOIN content.film_workmovie fw ON gfw.film_work_id = fw.id
             WHERE g.id in ('{}')
             GROUP BY g.id;
             """.format("','".join(ids))
