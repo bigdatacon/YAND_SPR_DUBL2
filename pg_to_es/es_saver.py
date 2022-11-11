@@ -155,7 +155,7 @@ if __name__ == '__main__':
 
     #6 read index after insert data in point #
     print(example.test_read_index(production_index))
-    print(example.test_read_index('table3'))
+    # print(example.test_read_index('table3'))
 
     #7 save_many for test index
     # print(example.test_save_many(test_docs, index_test))
