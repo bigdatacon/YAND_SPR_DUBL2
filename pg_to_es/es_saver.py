@@ -115,10 +115,10 @@ class ESSaver(Settings, Schemes):
 
 if __name__ == '__main__':
     settings = Settings()
-    # print(settings.get_settings())
+    print(settings.get_settings())
 
     example =ESSaver()
-    # print(example._ESSaver__get_es_link())
+    print(example._ESSaver__get_es_link())
     # print(example.test_get_scheme('genres'))
     #1 create index
     index = 'genres'
@@ -154,8 +154,8 @@ if __name__ == '__main__':
     # print(example.test_save_one(test_data, index_test))
 
     #6 read index after insert data in point #
-    print(example.test_read_index(index_test))
-    # print(example.test_read_index(production_index))
+    print(example.test_read_index(production_index))
+    print(example.test_read_index('table3'))
 
     #7 save_many for test index
     # print(example.test_save_many(test_docs, index_test))
