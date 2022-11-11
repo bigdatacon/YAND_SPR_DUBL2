@@ -45,30 +45,30 @@ services:
 #    depends_on:
 #      - django
 #
-#  elastic:
-#    image: elasticsearch:7.7.0
-#    container_name: elastic_movies
-#    env_file:
-#      - es.env
-#    ports:
-#      - "9200:9200"
-#    networks:
-#      - movies_network
-#    depends_on:
-#      - postgres
-#
-#  etl:
-#    build:
-#      context: postgres_to_es
-#      dockerfile: Dockerfile
-#    container_name: etl_movies
-#    networks:
-#      - movies_network
-#    command: python etl.py
-#    depends_on:
-#      - postgres
-#      - elastic
-#
+  elastic:
+    image: elasticsearch:7.7.0
+    container_name: elastic_movies
+    env_file:
+      - es.env
+    ports:
+      - "9200:9200"
+    networks:
+      - movies_network
+    depends_on:
+      - postgres
+
+  etl:
+    build:
+      context: postgres_to_es
+      dockerfile: Dockerfile
+    container_name: etl_movies
+    networks:
+      - movies_network
+    command: python etl.py
+    depends_on:
+      - postgres
+      - elastic
+
 volumes:
   db_volume:
   static_volume:
