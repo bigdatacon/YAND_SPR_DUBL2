@@ -59,7 +59,7 @@ services:
 
   etl:
     build:
-      context: postgres_to_es
+      context: pg_to_es
       dockerfile: Dockerfile
     container_name: etl_movies
     networks:
