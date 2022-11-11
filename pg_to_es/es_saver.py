@@ -50,7 +50,7 @@ class ESSaver(Settings, Schemes):
     @backoff()
     def create_index(self, index: str):
         scheme = self.get_schemes()[self.SCHEMES[index]]
-        logger.debug(f"this scheme: {scheme}")
+        # logger.debug(f"this scheme: {scheme}")
         resp = requests.put("{}/{}".format(self.__get_es_link(), index), json=scheme)
         if resp.status_code != 200:
             logger.warning(f"Ошибка создания поискового индекса: {index}")
@@ -123,6 +123,7 @@ if __name__ == '__main__':
     #1 create index
     index = 'genres'
     index_test = 'table4'
+    production_index = 'movies'
     test_data = {
     "text_field": "my pretty text test",
     "number": 111
@@ -153,7 +154,8 @@ if __name__ == '__main__':
     # print(example.test_save_one(test_data, index_test))
 
     #6 read index after insert data in point #
-    # print(example.test_read_index(index_test))
+    print(example.test_read_index(index_test))
+    # print(example.test_read_index(production_index))
 
     #7 save_many for test index
     # print(example.test_save_many(test_docs, index_test))

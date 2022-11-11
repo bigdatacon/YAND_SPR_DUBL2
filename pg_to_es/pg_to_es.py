@@ -2,8 +2,8 @@ import logging
 from datetime import datetime
 from typing import List, Set
 
-from db.pg_loader import PGLoader
-from db.es_saver import ESSaver
+from pg_loader import PGLoader
+from es_saver import ESSaver
 from state import State, JsonFileStorage
 
 logger = logging.getLogger(__name__)

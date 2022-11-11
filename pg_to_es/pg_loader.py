@@ -74,23 +74,40 @@ if __name__ == '__main__':
     #         LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
     #         LEFT JOIN content.person p ON p.id = pfw.person_id
     #         GROUP BY fw.id"""
-    sql_string_long = """            
-            SELECT DISTINCT
-                fw.id AS film_work_id,
-                pfw.person_id AS person_id,
-                gfw.genre_id AS genre_id,
-                fw.updated_at
-            FROM content.film_workmovie fw
-            LEFT JOIN content.person_film_work pfw ON fw.id = pfw.film_work_id
-            LEFT JOIN content.genre_film_work gfw ON fw.id = gfw.film_work_id
+    sql_string_long = """            SELECT
+                ARRAY_AGG(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'director') AS director,
+                ARRAY_AGG(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'actor') AS actors_names,
+                ARRAY_AGG(DISTINCT p.full_name) FILTER (WHERE pfw.role = 'writer') AS writers_names
 
-            """
+            FROM content.film_workmovie fw
+            LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
+            LEFT JOIN content.genre g ON g.id = gfw.genre_id
+            LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
+            LEFT JOIN content.person p ON p.id = pfw.person_id
+            GROUP BY fw.id"""
+    # sql_string_long = """
+    #         SELECT
+    #             # p.id,
+    #             # p.full_name,
+    #             ARRAY_AGG(DISTINCT jsonb_build_object('id', fw.id, 'role', pfw.role, 'title', fw.title)) AS films
+    #         FROM content.person p
+    #         LEFT JOIN content.person_film_work pfw ON p.id = pfw.person_id
+    #         LEFT JOIN content.film_workmovie fw ON pfw.film_work_id = fw.id
+    #
+    #         GROUP BY p.id
+    #
+    #         """
 
     # sql_string_long = """SELECT *
     #             from  content.film_workmovie fwm join content.genre_film_work gfw on fwm.id = gfw.film_work_id"""
 
-    print(example._PGLoader__get_cursor())
+    # print(example._PGLoader__get_cursor())
     print(example.do_query(sql_string_long))
+    # records = example.do_query(sql_string_long)
+
+    # update_at = [r['updated_at'].strftime('%Y-%m-%d %H:%M:%S.%f') for r in records][:3] if records else None
+    # print(f' this records : {records[:3]}')
+    # print(f' this update_at : {update_at}')
     # for i in example.do_query(sql_string_long):
     #     # print(f' eto i : {i}')
     #     for k,v in i.items():
