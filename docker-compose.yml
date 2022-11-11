@@ -3,7 +3,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres:13-alpine
-    container_name: postgres_movies2
+    container_name: postgres_movies
     env_file:
       - db.env
 #    volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: django_movies2
+    container_name: django_movies
     volumes:
       - static_volume:/data/static
     networks:
@@ -74,4 +74,4 @@ volumes:
   static_volume:
 
 networks:
-  movies_network2:
+  movies_network:
