@@ -18,6 +18,7 @@ def backoff(start_sleep_time=0.1, factor=2, border_sleep_time=10):
     def func_wrapper(func):
         @wraps(func)
         def inner(*args, **kwargs):
+            t = start_sleep_time
             while True:
                 try:
                     res = func(*args, **kwargs)
@@ -48,7 +49,4 @@ def backoff(start_sleep_time=0.1, factor=2, border_sleep_time=10):
 # def say(name, surname, age):
 #     print('hello world', name, surname, age)
 # say('VV', 'FF', 400)
-
-
-
 
