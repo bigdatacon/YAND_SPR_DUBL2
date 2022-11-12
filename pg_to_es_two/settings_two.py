@@ -40,5 +40,5 @@ if __name__ == '__main__':
     # #
     #3 Проверяю что работате парсин файла в основном классе
     config = Settings()
-    config = config.get_settings()
-    print(config)
+    config = config.get_settings().film_work_pg
+    print(Settings().get_settings().film_work_pg)
