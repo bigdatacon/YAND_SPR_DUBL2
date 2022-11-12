@@ -33,7 +33,7 @@ class State:
     def __init__(self, storage=JsonFileStorage):
         self.__storage = storage
 
-    def get_state(self, index) -> dict:
+    def get_state(self, index:str) -> dict:
         return self.__storage.retrieve_state().get(index)
 
     def set_state(self, index:str, value:Any)->None:
@@ -45,7 +45,7 @@ class State:
 if __name__ == '__main__':
     example = State(JsonFileStorage())
     print(example.get_state('movies'))
-    # print(example.set_state('movies', 7))
+    print(example.set_state('movies', 8))
 
 
 
