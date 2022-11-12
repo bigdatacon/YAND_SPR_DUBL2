@@ -13,6 +13,8 @@ from resources_two import backoff
 
 class ESSaver(Settings, Schemes):
 
+    #tutorial: https://www.youtube.com/watch?v=LchUgSMPDRI
+
     __es_con = None
 
     SCHEMES = {
