@@ -53,3 +53,6 @@ class State:
         """Получить состояние по определённому ключу"""
         state = self.storage.retrieve_state()
         return state.get(key)
+
+example = State(JsonFileStorage)
+print(example.get_state('movie'))
