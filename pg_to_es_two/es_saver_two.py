@@ -56,8 +56,7 @@ class ESSaver(Settings, Schemes):
             logger.warning(f"DELETE индекс: {resp.status_code, index_name}")
 
     def create_index2(self, index_name):
-
-        self.__get_es_client().indices.create(index=index_name, body=load_json(config_fname))
+        return self.__get_es_client().indices.create(index=index_name, **self.get_schemes().get(index_name))
 
 
 
@@ -132,6 +131,7 @@ class ESSaver(Settings, Schemes):
 if __name__ == "__main__":
     # es_link = "http://127.0.0.1:9200"
     index = 'nyc-restaurants'
+    index_real = 'genres2'
     client = Elasticsearch('http://127.0.0.1:9200'
                            # Add your cluster configuration here!
                            )
@@ -146,6 +146,8 @@ if __name__ == "__main__":
     # print(example._ESSaver__get_es_link())
     # print(example.create_index(client))
     # print(example._ESSaver__delete_index(index))
-    print(example.get_schemes())
+    print(example.get_schemes().get(index_real))
+    print(example.create_index2(index_real))
+    print(example._ESSaver__delete_index(index_real))
 
 
