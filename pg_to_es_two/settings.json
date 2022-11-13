@@ -7,7 +7,7 @@
     "user": "postgres"
   },
   "film_work_es": {
-    "host": "elastic",
+    "host": "127.0.0.1",
     "port": 9200
   }
 }

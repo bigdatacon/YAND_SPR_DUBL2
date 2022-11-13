@@ -1,5 +1,5 @@
 {
-    "film_scheme": {
+    "movies": {
         "settings": {
             "refresh_interval": "1s",
             "analysis": {
@@ -93,7 +93,7 @@
             }
         }
     },
-    "genre_scheme": {
+    "genres": {
         "settings": {
             "refresh_interval": "1s",
             "analysis": {
@@ -169,7 +169,7 @@
             }
         }
     },
-    "person_scheme": {
+    "persons": {
         "settings": {
             "refresh_interval": "1s",
             "analysis": {
