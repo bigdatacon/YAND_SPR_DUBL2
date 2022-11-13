@@ -4,6 +4,7 @@ from elasticsearch import Elasticsearch, helpers
 from typing import List
 logger = logging.getLogger(__name__)
 
+
 #teory https://github.com/elastic/elasticsearch-py/blob/main/examples/bulk-ingest/bulk-ingest.py
 #teory good https://github.com/elastic/elasticsearch-py/issues/1698
 
