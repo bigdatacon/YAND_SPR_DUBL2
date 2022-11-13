@@ -56,6 +56,9 @@ class ESSaver(Settings, Schemes):
         else:
             logger.warning(f"DELETE индекс: {resp.status_code, index_name}")
 
+    def __search_index(self, index_name):
+        return Elasticsearch(self.__get_es_link()).search(index=index_name)
+
     def create_index2(self, index_name):
         return self.__get_es_client().indices.create(index=index_name, **self.get_schemes().get(index_name))
 
@@ -147,8 +150,9 @@ if __name__ == "__main__":
     # print(example._ESSaver__get_es_link())
     # print(example.create_index(client))
     # print(example._ESSaver__delete_index(index))
-    print(example.get_schemes().get(index_real))
+    # print(example.get_schemes().get(index_real))
     print(example.create_index2(index_real))
+    print(example._ESSaver__search_index(index_real))
     print(example._ESSaver__delete_index(index_real))
 
 
