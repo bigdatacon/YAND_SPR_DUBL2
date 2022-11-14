@@ -18,10 +18,11 @@ class PGtoES(PGLoader, ESSaver):
         last_updated_time = self.state.get_state(index + '_last_update')
         return last_updated_time if last_updated_time else datetime.min
 
-    def find_person_id_after_update(self, last_updated):
+    def find_person_id_after_update(self):
         sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated('persons2')}' ORDER BY updated_at"
         res = self.do_query(sql_1_p_change)
         person_ids_where_person_changed = set(i.get('id') for  i in res)
+        print(f' here person_ids_where_person_changed : {person_ids_where_person_changed}')
         return person_ids_where_person_changed
 
     def find_film_change_where_person_changed(self, person_ids_where_person_changed):
@@ -54,3 +55,6 @@ class PGtoES(PGLoader, ESSaver):
                                                 WHERE fw.id IN ('{}')""".format("','".join(film_ids_where_person_changed))
         res_3 = self.do_query(sql_3_all_film_data_where_person_changed)
         return res_3
+
+if __name__ == '__main__':
+    example = PGtoES()
