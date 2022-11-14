@@ -12,3 +12,5 @@ docker-compose up
 Важная теория по эластику
 #teory https://github.com/elastic/elasticsearch-py/blob/main/examples/bulk-ingest/bulk-ingest.py
 #teory good https://github.com/elastic/elasticsearch-py/issues/1698
+#bulk : https://towardsdatascience.com/how-to-index-elasticsearch-documents-with-the-bulk-api-in-python-b5bb01ed3824
+# https://sunscrapers.com/blog/elasticsearch-python-7-tips-best-practices/
