@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 from typing import List, Set
-
+import json
 from typing import Optional
 from pg_loader_two import PGLoader
 from es_saver_two import ESSaver
@@ -75,3 +75,8 @@ if __name__ == '__main__':
     #3 проверка find_all_film_data_where_person_changed
     res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
     print(res_3)
+
+    with open('schemes_predv.json') as json_file:
+        scheme = json.load(json_file)
+    print(f'here scheme : {scheme}')
+
