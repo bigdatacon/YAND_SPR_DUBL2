@@ -1,4 +1,4 @@
-from pg_to_es_two.logger_settings.logger_settings import logger
+from logger_settings.logger_settings import logger
 from functools import wraps
 import time
 

@@ -4,7 +4,6 @@ from psycopg2 import DatabaseError
 from psycopg2 import Error
 from settings_two import Settings
 from datetime import datetime
-
 from settings_two import Settings
 from resources_two import backoff
 
@@ -67,6 +66,7 @@ if __name__ == '__main__':
 
     res_2 = example.do_query(sql_2_film_change_where_person_changed)
     film_ids_where_person_changed = set(i.get('id') for i in res_2)
+    # film_ids_where_person_changed = " , ".join(film_ids_where_person_changed)
     # print(film_ids_where_person_changed)
 
     sql_3_all_film_data_where_person_changed = """SELECT
@@ -87,6 +87,7 @@ if __name__ == '__main__':
                                             LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
                                             LEFT JOIN content.genre g ON g.id = gfw.genre_id
                                             WHERE fw.id IN ('{}')""".format("','".join(film_ids_where_person_changed))
+
 
 
     res_3 = example.do_query(sql_3_all_film_data_where_person_changed)
