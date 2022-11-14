@@ -59,12 +59,17 @@ class PGtoES(PGLoader, ESSaver):
         res_3 = self.do_query(sql_3_all_film_data_where_person_changed)
         return res_3
 
-    def sync_to_elastic_index(self, index_name):
+    def sync_to_elastic_index(self, index_name, res_3):
         if not self.state.get_state(index_name + '_last_update'):
             scheme = self.schemes.get_schemes().get(index_name)
-            print(f' here scheme{scheme}')
+            # print(f' here scheme{scheme}')
             self.create_index(index_name, scheme)
             print(f' index created')
+            self.save_many(index_name, res_3)
+        else:
+            print(f' index yet created')
+            self.save_many(index_name, res_3)
+
 
     def read_index(self, index_name):
         return self._ESSaver__search_index(index_name)
