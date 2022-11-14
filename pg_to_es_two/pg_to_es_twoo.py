@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from typing import List, Set
 
+from typing import Optional
 from pg_loader_two import PGLoader
 from es_saver_two import ESSaver
 from state_two import State, JsonFileStorage
@@ -14,8 +15,11 @@ class PGtoES(PGLoader, ESSaver):
         self.state = State(JsonFileStorage())
         self.batch_size = batch_size
 
-    def __get_last_updated(self, index):
-        last_updated_time = self.state.get_state(index + '_last_update')
+    def __get_last_updated(self, index: Optional[str]=None):
+        if index:
+            last_updated_time = self.state.get_state(index + '_last_update')
+        else:
+            last_updated_time = None
         return last_updated_time if last_updated_time else datetime.min
 
     def find_person_id_after_update(self):
@@ -58,3 +62,16 @@ class PGtoES(PGLoader, ESSaver):
 
 if __name__ == '__main__':
     example = PGtoES()
+    # print(example._PGtoES__get_last_updated())
+    last_state = example._PGtoES__get_last_updated()
+    print(f'here last_state : {last_state}')
+    #1проверка     print(example.find_person_id_after_update())
+    person_ids_where_person_changed = example.find_person_id_after_update()
+    # print(example.find_person_id_after_update())
+    #2 проверка find_film_change_where_person_changed
+    film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
+    # print(film_ids_where_person_changed)
+
+    #3 проверка find_all_film_data_where_person_changed
+    res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
+    print(res_3)
