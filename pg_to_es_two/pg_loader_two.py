@@ -3,6 +3,7 @@ import psycopg2.extras
 from psycopg2 import DatabaseError
 from psycopg2 import Error
 from settings_two import Settings
+from datetime import datetime
 
 from settings_two import Settings
 from resources_two import backoff
@@ -36,5 +37,25 @@ if __name__ == '__main__':
     example = PGLoader()
     print(example._PGLoader__get_db_params())
     print(example._PGLoader__get_cursor())
-    print(example.do_query('select * from content.genre'))
+    last_state = datetime.min
+    print(last_state)
+    # res = example.do_query("""select * from content.genre where updated_at>'{}'""".format(last_state))
+    res = example.do_query(f"select * from content.genre where updated_at>'{last_state}'")
+    print(res)
+    for i in res:
+
+        print(i.get('updated_at'), i.get('updated_at').strftime("%Y-%m-%d %H:%M:%S.%f"), i.get('updated_at').strftime("%Y-%m-%d %H:%M"))
+        break
+
+    """За всеми обновлёнными именами людей за промежуток времени. Запрос получается очень простым:"""
+
+    sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{last_state}' ORDER BY updated_at"
+    sql_2_film_change_where_person_changed = f"""SELECT fw.id, fw.updated_at
+                                                FROM content.film_work fw
+                                                LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
+                                                WHERE pfw.person_id IN (<id_всех_людей>)
+                                                ORDER BY fw.updated_at"""
+
+
+
 

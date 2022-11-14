@@ -1,6 +1,7 @@
 import logging
 import requests
 from typing import Optional
+from datetime import datetime
 from elasticsearch import Elasticsearch, helpers
 from typing import List
 logger = logging.getLogger(__name__)
@@ -157,4 +158,6 @@ if __name__ == "__main__":
     # for el in test_docs],
     # index=index)
     print(example._ESSaver__search_index(index))
+    print(f'here datetime.min : {datetime.min}')
+    print(f'here datetime.min : {datetime.min.strftime("%Y-%m-%d %H:%M:%S.%f")}')
 

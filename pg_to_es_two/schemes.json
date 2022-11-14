@@ -225,10 +225,7 @@
                         }
                     }
                 },
-                "birth_date": {
-                    "type": "text",
-                    "analyzer": "ru_en"
-                },
+
                 "films": {
                     "type": "nested",
                     "dynamic": "strict",
