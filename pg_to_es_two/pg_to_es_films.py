@@ -22,10 +22,9 @@ class PGtoESFilms(PGLoader, ESSaver):
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
 
-    def sync_persons_changes(self, index_name: Optional[str] = 'persons_test'):
-        person_ids_where_person_changed = self.find_person_id_after_update()
-        film_ids_where_person_changed = self.find_film_change_where_person_changed(person_ids_where_person_changed)
-        res_3 = self.find_all_film_data_where_person_changed(film_ids_where_person_changed)
+    def sync_films_changes(self, index_name: Optional[str] = 'films_test'):
+        films_ids_where_person_changed = self.find_films_id_after_update()
+        res_3 = self.find_all_film_data_where_person_changed(films_ids_where_person_changed)
         if res_3:
             self.sync_to_elastic_index(index_name, res_3)
 
@@ -71,11 +70,11 @@ class PGtoESFilms(PGLoader, ESSaver):
             scheme = self.schemes.get_schemes().get(index_name)
             # print(f' here scheme{scheme}')
             self.create_index(index_name, scheme)
-            print(f' index created')
+            print(f' index {self.index_name} created')
             self.save_many(index_name, res_3)
             self.state.set_state(index_name + '_last_update', str(datetime.now()))
         else:
-            print(f' index yet created')
+            print(f' index {self.index_name} yet created')
             self.save_many(index_name, res_3)
             self.state.set_state(index_name + '_last_update', str(datetime.now()))
 
