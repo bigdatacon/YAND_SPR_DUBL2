@@ -81,11 +81,11 @@ class PGtoESPersons(PGLoader, ESSaver):
             scheme = self.schemes.get_schemes().get(index_name)
             # print(f' here scheme{scheme}')
             self.create_index(index_name, scheme)
-            print(f' index created')
+            print(f' index { self.index_name } created')
             self.save_many(index_name, res_3)
             self.state.set_state(index_name + '_last_update', str(datetime.now()))
         else:
-            print(f' index yet created')
+            print(f' index { self.index_name } yet created')
             self.save_many(index_name, res_3)
             self.state.set_state(index_name + '_last_update', str(datetime.now()))
 
