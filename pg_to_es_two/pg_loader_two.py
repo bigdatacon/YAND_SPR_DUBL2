@@ -91,7 +91,7 @@ if __name__ == '__main__':
 
 
     res_3 = example.do_query(sql_3_all_film_data_where_person_changed)
-    print(res_3)
+    # print(res_3)
 
-
+    print(example.do_query("select  ARRAY_AGG(DISTINCT jsonb_build_object('id', g.id, 'name', g.name)) AS genres_long from content.genre g" ))
 

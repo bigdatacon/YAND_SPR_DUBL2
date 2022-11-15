@@ -37,6 +37,7 @@ class PGtoES(PGLoader, ESSaver):
         film_ids_where_person_changed = set(i.get('id') for i in res_2)
         return film_ids_where_person_changed
 
+    """убрал для простоты пока created_at и updated_at и p.id, из схемы эластик """
     def find_all_film_data_where_person_changed(self, film_ids_where_person_changed):
         sql_3_all_film_data_where_person_changed = """SELECT
                                                     fw.id as fw_id,
@@ -44,18 +45,21 @@ class PGtoES(PGLoader, ESSaver):
                                                     fw.description,
                                                     fw.rating,
                                                     fw.type,
-                                                    fw.created_at,
-                                                    fw.updated_at,
                                                     pfw.role,
-                                                    p.id,
                                                     p.full_name,
-                                                    g.name
+                                                    g.name as genre_name,
+                                                    ARRAY_AGG(distinct jsonb_build_object('id', g.id, 'name', g.name)) AS genres_long
+
                                                 FROM content.film_workmovie fw
                                                 LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id
                                                 LEFT JOIN content.person p ON p.id = pfw.person_id
                                                 LEFT JOIN content.genre_film_work gfw ON gfw.film_work_id = fw.id
                                                 LEFT JOIN content.genre g ON g.id = gfw.genre_id
-                                                WHERE fw.id IN ('{}')""".format("','".join(film_ids_where_person_changed))
+                                                WHERE fw.id IN ('{}')
+                                                GROUP BY fw.id , pfw.id, p.id, g.id
+
+                                                
+                                                """.format("','".join(film_ids_where_person_changed))
         res_3 = self.do_query(sql_3_all_film_data_where_person_changed)
         return res_3
 
@@ -95,7 +99,7 @@ if __name__ == '__main__':
 
     #3 проверка find_all_film_data_where_person_changed
     res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
-    # print(res_3)
+    print(res_3)
 
     with open('schemes_predv.json') as json_file:
         scheme = json.load(json_file)
@@ -106,7 +110,7 @@ if __name__ == '__main__':
     # print(example.sync_to_elastic_index(index_name))
 
     #5 проверка что созданный индекс читается
-    print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
+    # print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
 
     #6 проверка что индекс удаляется
     # print(f' eto example.del_index(index_name) : {example.del_index(index_name)}')
