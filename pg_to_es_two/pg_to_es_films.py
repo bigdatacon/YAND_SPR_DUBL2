@@ -32,20 +32,8 @@ class PGtoESFilms(PGLoader, ESSaver):
     def find_films_id_after_update(self):
         sql_1_p_change = f"SELECT id, updated_at FROM content.film_workmovie WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"
         res = self.do_query(sql_1_p_change)
-        person_ids_where_person_changed = set(i.get('id') for i in res)
-        return person_ids_where_person_changed
-
-    def find_film_change_where_person_changed(self, person_ids_where_person_changed):
-        sql_2_film_change_where_person_changed = """SELECT fw.id, fw.updated_at \
-                                                FROM content.film_workmovie fw \
-                                                LEFT JOIN content.person_film_work pfw ON pfw.film_work_id = fw.id WHERE pfw.person_id IN ('{}') ORDER BY fw.updated_at""".format(
-            "','".join(person_ids_where_person_changed))
-
-        res_2 = self.do_query(sql_2_film_change_where_person_changed)
-        film_ids_where_person_changed = set(i.get('id') for i in res_2)
-        return film_ids_where_person_changed
-
-    """убрал для простоты пока created_at и updated_at и p.id, из схемы эластик """
+        films_ids_where_person_changed = set(i.get('id') for i in res)
+        return films_ids_where_person_changed
 
     def find_all_film_data_where_person_changed(self, film_ids_where_person_changed):
         sql_3_all_film_data_where_person_changed = """SELECT
@@ -106,13 +94,12 @@ if __name__ == '__main__':
 
     # 1проверка     print(example.find_person_id_after_update())
     films_ids_where_person_changed = example.find_films_id_after_update()
-    print(f' here films_ids_where_person_changed : {films_ids_where_person_changed}')
+    # print(f' here films_ids_where_person_changed : {films_ids_where_person_changed}')
 
-    # 2 проверка find_film_change_where_person_changed
-    film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
+
 
     # 3 проверка find_all_film_data_where_person_changed
-    res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
+    res_3 = example.find_all_film_data_where_person_changed(films_ids_where_person_changed)
     # print(res_3)
 
     # with open('schemes_predv.json') as json_file:
