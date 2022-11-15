@@ -18,6 +18,14 @@ class PGtoES(PGLoader, ESSaver):
         self.batch_size = batch_size
         self.schemes = Schemes()
 
+
+    def sync_persons_changes(self):
+        person_ids_where_person_changed = example.find_person_id_after_update()
+        film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
+
+        res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
+
+
     def __get_last_updated(self, index: Optional[str]=None):
         last_updated_time = self.state.get_state(index + '_last_update')
         return last_updated_time if last_updated_time else datetime.min
@@ -70,9 +78,11 @@ class PGtoES(PGLoader, ESSaver):
             self.create_index(index_name, scheme)
             print(f' index created')
             self.save_many(index_name, res_3)
+            self.state.set_state(index_name + '_last_update', str(datetime.now()))
         else:
             print(f' index yet created')
             self.save_many(index_name, res_3)
+            self.state.set_state(index_name + '_last_update', str(datetime.now()))
 
 
     def read_index(self, index_name):
@@ -110,9 +120,18 @@ if __name__ == '__main__':
     # print(example.sync_to_elastic_index(index_name, res_3))
 
     #5 проверка что созданный индекс читается
-    print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
+    # print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
 
     #6 проверка что индекс удаляется
     # print(f' eto example.del_index(index_name) : {example.del_index(index_name)}')
+
+    #7 проверка что устанавливается состояние
+    # print(str(datetime.now()))
+    #
+    # dict = {}
+    # dict['test'] = str(datetime.now())
+    # with open("state.json", 'w') as conf_file:
+    #     state = json.dump(dict, conf_file)
+
 
 
