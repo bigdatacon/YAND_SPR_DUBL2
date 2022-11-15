@@ -18,6 +18,7 @@ class PGtoESFilms(PGLoader, ESSaver):
         self.state = State(JsonFileStorage())
         self.batch_size = batch_size
         self.schemes = Schemes()
+        self.index_name = 'films_test'
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
 
@@ -28,8 +29,8 @@ class PGtoESFilms(PGLoader, ESSaver):
         if res_3:
             self.sync_to_elastic_index(index_name, res_3)
 
-    def find_films_id_after_update(self):
-        sql_1_p_change = f"SELECT id, updated_at FROM content.film_workmovie WHERE updated_at > '{self.__get_last_updated('films3')}' ORDER BY updated_at"
+    def find_person_id_after_update(self):
+        sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"
         res = self.do_query(sql_1_p_change)
         person_ids_where_person_changed = set(i.get('id') for i in res)
         return person_ids_where_person_changed
@@ -98,7 +99,7 @@ class PGtoESFilms(PGLoader, ESSaver):
 
 
 if __name__ == '__main__':
-    example = PGtoES()
+    example = PGtoESFilms()
     index_name = 'persons_test'
     last_state = example._PGtoES__get_last_updated(index_name)
     print(f'here last_state : {last_state}')
