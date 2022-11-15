@@ -3,42 +3,20 @@ import requests
 from typing import Optional
 from datetime import datetime
 from elasticsearch import Elasticsearch, helpers
-from typing import List
 logger = logging.getLogger(__name__)
+from resources_two import backoff
 
 
 #teory https://github.com/elastic/elasticsearch-py/blob/main/examples/bulk-ingest/bulk-ingest.py
 #teory good https://github.com/elastic/elasticsearch-py/issues/1698
 
-# from settings.settings import Settings
-# from settings.schemes import Schemes
+
 from settings_two import Settings
 from schemes import Schemes
-from resources_two import backoff
-from elasticsearch import  Elasticsearch
-
-
-
-#!/usr/bin/env python
-# Licensed to Elasticsearch B.V under one or more agreements.
-# Elasticsearch B.V licenses this file to you under the Apache 2.0 License.
-# See the LICENSE file in the project root for more information
-
-"""Script that downloads a public dataset and streams it to an Elasticsearch cluster"""
-
-import csv
-from os.path import abspath, join, dirname, exists
-import tqdm
-import urllib3
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import streaming_bulk
 
 
-NYC_RESTAURANTS = (
-    "https://data.cityofnewyork.us/api/views/43nn-pn8j/rows.csv?accessType=DOWNLOAD"
-)
-DATASET_PATH = join(dirname(abspath(__file__)), "nyc-restaurants.csv")
-CHUNK_SIZE = 16384
+
 
 
 
@@ -60,6 +38,7 @@ class ESSaver(Settings, Schemes):
     def __search_index(self, index_name):
         return Elasticsearch(self.__get_es_link()).search(index=index_name)
 
+    # @backoff()
     def create_index(self, index_name: str, scheme: Optional[dict]=None):
         print(f' here scheme : {scheme}')
         scheme_it = scheme if scheme else  self.get_schemes().get(index_name)
@@ -70,6 +49,7 @@ class ESSaver(Settings, Schemes):
     def save_one(self, index_name, doc):
         return self.__get_es_client().bulk(index_name, doc)
 
+    @backoff()
     def save_many(self, index_name, docs):
         helpers.bulk(self.__get_es_client(), [{ "_id": el.get('id'), **el}
         for el in docs],

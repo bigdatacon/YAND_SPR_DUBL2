@@ -1,5 +1,5 @@
 import json
-from pg_to_es_two.logger_settings.logger_settings import logger
+from logger_settings.logger_settings import logger
 
 class Schemes:
     def __init__(self):

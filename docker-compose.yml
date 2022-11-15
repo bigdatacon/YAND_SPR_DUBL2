@@ -57,17 +57,31 @@ services:
     depends_on:
       - postgres
 
-  etl:
-    build:
-      context: pg_to_es
-      dockerfile: Dockerfile
-    container_name: etl_movies
-    networks:
-      - movies_network
-    command: python etl.py
-    depends_on:
-      - postgres
-      - elastic
+#  etl:
+#    build:
+#      context: pg_to_es
+#      dockerfile: Dockerfile
+#    container_name: etl_movies
+#    networks:
+#      - movies_network
+#    command: python etl.py
+#    depends_on:
+#      - postgres
+#      - elastic
+
+
+  #блок с etl по теории яндекса
+#  etl_two:
+#    build:
+#      context: pg_to_es_two
+#      dockerfile: Dockerfile
+#    container_name: etl_movies_two
+#    networks:
+#      - movies_network
+#    command: python etl.py
+#    depends_on:
+#      - postgres
+#      - elastic
 
 volumes:
   db_volume:

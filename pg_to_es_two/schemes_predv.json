@@ -74,10 +74,7 @@
                     "type": "text",
                     "analyzer": "ru_en"
                 },
-                "full_name": {
-                    "type": "text",
-                    "analyzer": "ru_en"
-                },
+
                 "genre_name": {
                     "type": "text",
                     "analyzer": "ru_en"
@@ -173,10 +170,7 @@
                     "type": "text",
                     "analyzer": "ru_en"
                 },
-                "full_name": {
-                    "type": "text",
-                    "analyzer": "ru_en"
-                },
+
                 "genre_name": {
                     "type": "text",
                     "analyzer": "ru_en"
@@ -268,10 +262,7 @@
                     "type": "text",
                     "analyzer": "ru_en"
                 },
-                "full_name": {
-                    "type": "text",
-                    "analyzer": "ru_en"
-                },
+
                 "full_name": {
                     "type": "text",
                     "analyzer": "ru_en"
