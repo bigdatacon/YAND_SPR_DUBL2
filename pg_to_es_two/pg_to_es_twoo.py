@@ -19,7 +19,7 @@ class PGtoES(PGLoader, ESSaver):
         self.batch_size = batch_size
         self.schemes = Schemes()
 
-    """Блок функций для заливки в эластик изменений по персонам"""
+    """1 Блок функций для заливки в эластик изменений по персонам"""
     def sync_persons_changes(self, index_name : Optional[str]= 'persons_test'):
         person_ids_where_person_changed = self.find_person_id_after_update()
         film_ids_where_person_changed = self.find_film_change_where_person_changed(person_ids_where_person_changed)
@@ -27,11 +27,6 @@ class PGtoES(PGLoader, ESSaver):
         if res_3:
             self.sync_to_elastic_index(index_name, res_3)
 
-
-
-    def __get_last_updated(self, index: Optional[str]=None):
-        last_updated_time = self.state.get_state(index + '_last_update')
-        return last_updated_time if last_updated_time else datetime.min
 
     def find_person_id_after_update(self):
         sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated('persons3')}' ORDER BY updated_at"
@@ -73,6 +68,12 @@ class PGtoES(PGLoader, ESSaver):
                                                 """.format("','".join(film_ids_where_person_changed))
         res_3 = self.do_query(sql_3_all_film_data_where_person_changed)
         return res_3
+
+
+    """4. Блок вспомогательных функций"""
+    def __get_last_updated(self, index: Optional[str]=None):
+        last_updated_time = self.state.get_state(index + '_last_update')
+        return last_updated_time if last_updated_time else datetime.min
 
     def sync_to_elastic_index(self, index_name, res_3):
         if not self.state.get_state(index_name + '_last_update'):
