@@ -29,8 +29,8 @@ class PGtoESFilms(PGLoader, ESSaver):
         if res_3:
             self.sync_to_elastic_index(index_name, res_3)
 
-    def find_person_id_after_update(self):
-        sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"
+    def find_films_id_after_update(self):
+        sql_1_p_change = f"SELECT id, updated_at FROM content.film_workmovie WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"
         res = self.do_query(sql_1_p_change)
         person_ids_where_person_changed = set(i.get('id') for i in res)
         return person_ids_where_person_changed
@@ -100,12 +100,13 @@ class PGtoESFilms(PGLoader, ESSaver):
 
 if __name__ == '__main__':
     example = PGtoESFilms()
-    index_name = 'persons_test'
-    last_state = example._PGtoES__get_last_updated(index_name)
+    index_name = 'films_test'
+    last_state = example._PGtoESFilms__get_last_updated(index_name)
     print(f'here last_state : {last_state}')
 
     # 1проверка     print(example.find_person_id_after_update())
-    person_ids_where_person_changed = example.find_person_id_after_update()
+    films_ids_where_person_changed = example.find_films_id_after_update()
+    print(f' here films_ids_where_person_changed : {films_ids_where_person_changed}')
 
     # 2 проверка find_film_change_where_person_changed
     film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
