@@ -40,7 +40,7 @@ class PGtoES(PGLoader, ESSaver):
     """убрал для простоты пока created_at и updated_at и p.id, из схемы эластик """
     def find_all_film_data_where_person_changed(self, film_ids_where_person_changed):
         sql_3_all_film_data_where_person_changed = """SELECT
-                                                    fw.id as fw_id,
+                                                    fw.id as id,
                                                     fw.title,
                                                     fw.description,
                                                     fw.rating,
@@ -99,18 +99,18 @@ if __name__ == '__main__':
 
     #3 проверка find_all_film_data_where_person_changed
     res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
-    print(res_3)
+    # print(res_3)
 
     with open('schemes_predv.json') as json_file:
         scheme = json.load(json_file)
     # print(f'here scheme : {scheme}')
 
-    #4 проверка что работает создание индекса
+    #4 проверка что работает создание индекса и запись в него
     # print(example.test_schemes())
-    # print(example.sync_to_elastic_index(index_name))
+    # print(example.sync_to_elastic_index(index_name, res_3))
 
     #5 проверка что созданный индекс читается
-    # print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
+    print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
 
     #6 проверка что индекс удаляется
     # print(f' eto example.del_index(index_name) : {example.del_index(index_name)}')
