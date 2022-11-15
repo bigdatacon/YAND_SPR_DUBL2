@@ -8,6 +8,7 @@ from es_saver_two import ESSaver
 from state_two import State, JsonFileStorage
 from settings_two import Settings
 from schemes import Schemes
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -19,11 +20,13 @@ class PGtoES(PGLoader, ESSaver):
         self.schemes = Schemes()
 
 
-    def sync_persons_changes(self):
-        person_ids_where_person_changed = example.find_person_id_after_update()
-        film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
+    def sync_persons_changes(self, index_name : Optional[str]= 'persons_test'):
+        person_ids_where_person_changed = self.find_person_id_after_update()
+        film_ids_where_person_changed = self.find_film_change_where_person_changed(person_ids_where_person_changed)
+        res_3 = self.find_all_film_data_where_person_changed(film_ids_where_person_changed)
+        if res_3:
+            self.sync_to_elastic_index(index_name, res_3)
 
-        res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
 
 
     def __get_last_updated(self, index: Optional[str]=None):
@@ -97,22 +100,21 @@ class PGtoES(PGLoader, ESSaver):
 if __name__ == '__main__':
     example = PGtoES()
     index_name = 'persons_test'
-    # print(example._PGtoES__get_last_updated())
     last_state = example._PGtoES__get_last_updated(index_name)
     print(f'here last_state : {last_state}')
+
     #1проверка     print(example.find_person_id_after_update())
     person_ids_where_person_changed = example.find_person_id_after_update()
-    # print(example.find_person_id_after_update())
+
     #2 проверка find_film_change_where_person_changed
     film_ids_where_person_changed = example.find_film_change_where_person_changed(person_ids_where_person_changed)
-    # print(film_ids_where_person_changed)
 
     #3 проверка find_all_film_data_where_person_changed
     res_3 = example.find_all_film_data_where_person_changed(film_ids_where_person_changed)
     # print(res_3)
 
-    with open('schemes_predv.json') as json_file:
-        scheme = json.load(json_file)
+    # with open('schemes_predv.json') as json_file:
+    #     scheme = json.load(json_file)
     # print(f'here scheme : {scheme}')
 
     #4 проверка что работает создание индекса и запись в него
@@ -120,7 +122,7 @@ if __name__ == '__main__':
     # print(example.sync_to_elastic_index(index_name, res_3))
 
     #5 проверка что созданный индекс читается
-    # print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
+    print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
 
     #6 проверка что индекс удаляется
     # print(f' eto example.del_index(index_name) : {example.del_index(index_name)}')
@@ -132,6 +134,13 @@ if __name__ == '__main__':
     # dict['test'] = str(datetime.now())
     # with open("state.json", 'w') as conf_file:
     #     state = json.dump(dict, conf_file)
+
+
+    #8 итоговая проверка что все работает для персон
+    # while True:
+    #     print(example.sync_persons_changes())
+    #     time.sleep(3)
+
 
 
 
