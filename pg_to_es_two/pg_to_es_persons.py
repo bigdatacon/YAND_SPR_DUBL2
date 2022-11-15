@@ -13,11 +13,12 @@ import time
 logger = logging.getLogger(__name__)
 
 
-class PGtoES(PGLoader, ESSaver):
+class PGtoESPersons(PGLoader, ESSaver):
     def __init__(self, batch_size: int = 100):
         self.state = State(JsonFileStorage())
         self.batch_size = batch_size
         self.schemes = Schemes()
+        self.index_name = 'persons_test'
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
     def sync_persons_changes(self, index_name : Optional[str]= 'persons_test'):
@@ -29,7 +30,7 @@ class PGtoES(PGLoader, ESSaver):
 
 
     def find_person_id_after_update(self):
-        sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated('persons3')}' ORDER BY updated_at"
+        sql_1_p_change = f"SELECT id, updated_at FROM content.person WHERE updated_at > '{self.__get_last_updated(self.index_name+'_last_update')}' ORDER BY updated_at"
         res = self.do_query(sql_1_p_change)
         person_ids_where_person_changed = set(i.get('id') for  i in res)
         return person_ids_where_person_changed
@@ -99,7 +100,7 @@ class PGtoES(PGLoader, ESSaver):
 
 
 if __name__ == '__main__':
-    example = PGtoES()
+    example = PGtoESPersons()
     index_name = 'persons_test'
     last_state = example._PGtoES__get_last_updated(index_name)
     print(f'here last_state : {last_state}')
