@@ -19,7 +19,7 @@ class PGtoES(PGLoader, ESSaver):
         self.batch_size = batch_size
         self.schemes = Schemes()
 
-
+    """Блок функций для заливки в эластик изменений по персонам"""
     def sync_persons_changes(self, index_name : Optional[str]= 'persons_test'):
         person_ids_where_person_changed = self.find_person_id_after_update()
         film_ids_where_person_changed = self.find_film_change_where_person_changed(person_ids_where_person_changed)
@@ -122,7 +122,7 @@ if __name__ == '__main__':
     # print(example.sync_to_elastic_index(index_name, res_3))
 
     #5 проверка что созданный индекс читается
-    print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
+    # print(f' eto example.read_index(index_name) : {example.read_index(index_name)}')
 
     #6 проверка что индекс удаляется
     # print(f' eto example.del_index(index_name) : {example.del_index(index_name)}')
