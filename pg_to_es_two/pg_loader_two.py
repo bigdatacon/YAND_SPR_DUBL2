@@ -14,6 +14,7 @@ class PGLoader(Settings):
     def __get_db_params(self):
         return dict(Settings().get_settings().film_work_pg)
 
+    @backoff()
     def __get_cursor(self):
         self.__pg_con = psycopg2.connect(**self.__get_db_params())
         self.__pg_cursor = self.__pg_con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)

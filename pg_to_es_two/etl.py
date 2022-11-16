@@ -59,9 +59,9 @@ def do_etl():
 if __name__ == '__main__':
 
     # Блок для быстрого чтения и удаления индексов - чтобы проверить что все работает
-    persons = PGtoESPersons()
-    films = PGtoESFilms()
-    genres = PGtoESGenres()
+    # persons = PGtoESPersons()
+    # films = PGtoESFilms()
+    # genres = PGtoESGenres()
     """1. быстрое удаление индекса для проверки - потом удалить для персон """
     # index_name = 'persons_test'
     # print(f' eto personsle.read_index(index_name) : {persons.read_index(index_name)}')

@@ -38,11 +38,11 @@ class ESSaver(Settings, Schemes):
     def __search_index(self, index_name):
         return Elasticsearch(self.__get_es_link()).search(index=index_name)
 
-    # @backoff()
+    @backoff()
     def create_index(self, index_name: str, scheme: Optional[dict]=None):
-        print(f' here scheme : {scheme}')
+        # print(f' here scheme : {scheme}')
         scheme_it = scheme if scheme else  self.get_schemes().get(index_name)
-        print(f' here scheme_it : {scheme_it}')
+        # print(f' here scheme_it : {scheme_it}')
         # return self.__get_es_client().indices.create(index=index_name, **self.get_schemes().get(index_name))
         return self.__get_es_client().indices.create(index=index_name, **scheme_it)
 
