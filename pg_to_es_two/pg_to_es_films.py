@@ -22,11 +22,11 @@ class PGtoESFilms(PGLoader, ESSaver):
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
 
-    def sync_films_changes(self, index_name: Optional[str] = 'films_test'):
+    def sync_films_changes(self):
         films_ids_where_person_changed = self.find_films_id_after_update()
         res_3 = self.find_all_film_data_where_person_changed(films_ids_where_person_changed)
         if res_3:
-            self.sync_to_elastic_index(index_name, res_3)
+            self.sync_to_elastic_index(self.index_name, res_3)
 
     def find_films_id_after_update(self):
         sql_1_p_change = f"SELECT id, updated_at FROM content.film_workmovie WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"

@@ -22,12 +22,12 @@ class PGtoESGenres(PGLoader, ESSaver):
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
 
-    def sync_genres_changes(self, index_name: Optional[str] = 'genres_test'):
+    def sync_genres_changes(self):
         genres_ids_where_person_changed = self.find_genres_id_after_update()
         film_ids_where_genres_changed = self.find_film_change_where_genres_changed(genres_ids_where_person_changed)
         res_3 = self.find_all_film_data_where_genres_changed(film_ids_where_genres_changed)
         if res_3:
-            self.sync_to_elastic_index(index_name, res_3)
+            self.sync_to_elastic_index(self.index_name, res_3)
 
     def find_genres_id_after_update(self):
         sql_1_p_change = f"SELECT id, updated_at FROM content.genre WHERE updated_at > '{self.__get_last_updated(self.index_name + '_last_update')}' ORDER BY updated_at"

@@ -21,12 +21,12 @@ class PGtoESPersons(PGLoader, ESSaver):
         self.index_name = 'persons_test'
 
     """1 Блок функций для заливки в эластик изменений по персонам"""
-    def sync_persons_changes(self, index_name : Optional[str]= 'persons_test'):
+    def sync_persons_changes(self):
         person_ids_where_person_changed = self.find_person_id_after_update()
         film_ids_where_person_changed = self.find_film_change_where_person_changed(person_ids_where_person_changed)
         res_3 = self.find_all_film_data_where_person_changed(film_ids_where_person_changed)
         if res_3:
-            self.sync_to_elastic_index(index_name, res_3)
+            self.sync_to_elastic_index(self.index_name, res_3)
 
 
     def find_person_id_after_update(self):
