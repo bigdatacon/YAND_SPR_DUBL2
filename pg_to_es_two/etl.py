@@ -48,6 +48,7 @@ def do_etl():
     persons = PGtoESPersons()
     films = PGtoESFilms()
     genres = PGtoESGenres()
+    main_logger.debug("Start loading from PostgreSQL to Elasticsearch")
     while True:
         persons.sync_persons_changes()
         time.sleep(3)
