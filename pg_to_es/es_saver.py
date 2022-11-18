@@ -54,6 +54,8 @@ class ESSaver(Settings, Schemes):
         resp = requests.put("{}/{}".format(self.__get_es_link(), index), json=scheme)
         if resp.status_code != 200:
             logger.warning(f"Ошибка создания поискового индекса: {index}")
+        #другой вариант
+
 
     """block of test functions for 127.0.0.1 поскольку с хост elastic не работает, нужно именно 127.0.0.1 , функции повторяют 
     функционал основных функций"""

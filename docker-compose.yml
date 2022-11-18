@@ -71,17 +71,17 @@ services:
 
 
   #блок с etl по теории яндекса
-  etl_two:
-    build:
-      context: pg_to_es_two
-      dockerfile: Dockerfile
-    container_name: etl_movies_two
-    networks:
-      - movies_network
-    command: python etl.py
-    depends_on:
-      - postgres
-      - elastic
+#  etl_two:
+#    build:
+#      context: pg_to_es_two
+#      dockerfile: Dockerfile
+#    container_name: etl_movies_two
+#    networks:
+#      - movies_network
+#    command: python etl.py
+#    depends_on:
+#      - postgres
+#      - elastic
 
 volumes:
   db_volume:

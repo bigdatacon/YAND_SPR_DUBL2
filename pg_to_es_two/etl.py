@@ -3,17 +3,18 @@ import logging
 from pg_to_es_persons import PGtoESPersons
 from pg_to_es_films import PGtoESFilms
 from pg_to_es_genres import PGtoESGenres
+from logger_settings.logger_settings import logger
 
-logging_level = logging.DEBUG
-main_logger = logging.getLogger()
-main_logger.setLevel(logging_level)
-
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging_level)
-formatter = logging.Formatter("'%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-stream_handler.setFormatter(formatter)
-
-main_logger.addHandler(stream_handler)
+# logging_level = logging.DEBUG
+# main_logger = logging.getLogger()
+# main_logger.setLevel(logging_level)
+#
+# stream_handler = logging.StreamHandler()
+# stream_handler.setLevel(logging_level)
+# formatter = logging.Formatter("'%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+# stream_handler.setFormatter(formatter)
+#
+# main_logger.addHandler(stream_handler)
 
 
 """1. быстрое удаление индекса для проверки - потом удалить для персон """
@@ -48,21 +49,27 @@ def do_etl():
     persons = PGtoESPersons()
     films = PGtoESFilms()
     genres = PGtoESGenres()
-    main_logger.debug("Start loading from PostgreSQL to Elasticsearch")
+    # main_logger.debug("Start loading from PostgreSQL to Elasticsearch")
     while True:
-        persons.sync_persons_changes()
-        time.sleep(3)
-        films.sync_films_changes()
-        time.sleep(3)
-        genres.sync_genres_changes()
-        time.sleep(2)
+        try:
+            print('start loading from PostgreSQL to Elasticsearch')
+            logger.debug(f'start loading from PostgreSQL to Elasticsearch')
+            time.sleep(1)
+            persons.sync_persons_changes()
+            time.sleep(3)
+            films.sync_films_changes()
+            time.sleep(3)
+            genres.sync_genres_changes()
+            time.sleep(2)
+        except Exception as e:
+            logger.warning(f'except in main_loop : {e.args}')
 
 if __name__ == '__main__':
 
     # Блок для быстрого чтения и удаления индексов - чтобы проверить что все работает
-    # persons = PGtoESPersons()
-    # films = PGtoESFilms()
-    # genres = PGtoESGenres()
+    persons = PGtoESPersons()
+    films = PGtoESFilms()
+    genres = PGtoESGenres()
     """1. быстрое удаление индекса для проверки - потом удалить для персон """
     # index_name = 'persons_test'
     # print(f' eto personsle.read_index(index_name) : {persons.read_index(index_name)}')
