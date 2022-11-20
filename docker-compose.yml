@@ -3,7 +3,7 @@ version: "3.7"
 services:
   postgres:
     image: postgres:13-alpine
-    container_name: postgres_movies2
+    container_name: postgres_movies
     env_file:
       - db.env
 #    volumes:
@@ -14,17 +14,17 @@ services:
     ports:
       - "5433:5432"
     networks:
-      - movies_network2
+      - movies_network
 
   django:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: django_movies2
+    container_name: django_movies
     volumes:
       - static_volume:/data/static
     networks:
-      - movies_network2
+      - movies_network
     ports:
       - "8080:8080"
     command: python manage.py runserver 0.0.0.0:8080
@@ -45,21 +45,21 @@ services:
 #    depends_on:
 #      - django
 #
-#  elastic:
-#    image: elasticsearch:7.7.0
-#    container_name: elastic_movies
-#    env_file:
-#      - es.env
-#    ports:
-#      - "9200:9200"
-#    networks:
-#      - movies_network
-#    depends_on:
-#      - postgres
-#
+  elastic:
+    image: elasticsearch:7.7.0
+    container_name: elastic_movies
+    env_file:
+      - es.env
+    ports:
+      - "9200:9200"
+    networks:
+      - movies_network
+    depends_on:
+      - postgres
+
 #  etl:
 #    build:
-#      context: postgres_to_es
+#      context: pg_to_es
 #      dockerfile: Dockerfile
 #    container_name: etl_movies
 #    networks:
@@ -68,10 +68,24 @@ services:
 #    depends_on:
 #      - postgres
 #      - elastic
-#
+
+
+  #блок с etl по теории яндекса
+  etl_two:
+    build:
+      context: pg_to_es_two
+      dockerfile: Dockerfile
+    container_name: etl_movies_two
+    networks:
+      - movies_network
+    command: python etl.py
+    depends_on:
+      - postgres
+      - elastic
+
 volumes:
   db_volume:
   static_volume:
 
 networks:
-  movies_network2:
+  movies_network:

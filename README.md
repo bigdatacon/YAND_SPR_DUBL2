@@ -1,6 +1,18 @@
 # YAND_SPR_DUBL2
 Повтор первого спринта чтобы отследить баги на новых названиях моделей 
 
+running:
+docker-compose build
+docker-compose up
+
+далее 1 РАЗ в контейнере postgres(тут название контейнера ) - в него нужно провалиться и выполнить скрипты из файла create_shema_and_tables.sql
+далее 1 раз выполнить файл sqlite_to_postgres.py
+
+Важная теория по эластику
+#teory https://github.com/elastic/elasticsearch-py/blob/main/examples/bulk-ingest/bulk-ingest.py
+#teory good https://github.com/elastic/elasticsearch-py/issues/1698
+#bulk : https://towardsdatascience.com/how-to-index-elasticsearch-documents-with-the-bulk-api-in-python-b5bb01ed3824
+# https://sunscrapers.com/blog/elasticsearch-python-7-tips-best-practices/
 #первичная инициализация базы 
 docker exec -it postgres_movies2 bash где postgres_movies2 - имя контейнера с постгре
 -далее выполнить команды из create_shema_and_tables.sql
@@ -8,7 +20,6 @@ docker exec -it postgres_movies2 bash где postgres_movies2 - имя конт�
 #running
 
 docker-compose build
-
 docker-compose up
 
 проверить работу api через файл api_test

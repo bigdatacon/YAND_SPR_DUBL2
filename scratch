@@ -1,0 +1,143 @@
+-- что ниже работает, но заменил таблицу на table2 так как table уже существует
+curl -XPUT http://127.0.0.1:9200/table2 -H 'Content-Type: application/json'
+ -d '{
+    "mappings": {
+        "properties": {
+            "text_field": {"type": "keyword"},
+            "number": {"type": "long"}
+        }
+    }
+}'
+
+
+-- через ipython не работает но работает что выше
+import requests
+headers = {'Content-Type': 'application/json'}
+ans = requests.put("http://127.0.0.1:9200/table",  {
+    "mappings": {
+        "properties": {
+            "text_field": {"type": "keyword"},
+            "number": {"type": "long"}
+        }
+    }
+}, headers=headers )
+
+
+--2 вставка данных через curl - не работает
+curl -XPOST http://127.0.0.1:9200/table2/_doc/ -H 'Content-Type: application/json' -d'
+{
+    "text_field": "my pretty text",
+    "number": 15
+}'
+
+--2 пробую вставку через ipython - так работает и без указания headers 'Content-Type: application/json'
+ans = requests.post("http://127.0.0.1:9200/table2/_doc/",  json = {
+    "text_field": "my pretty text",
+    "number": 15
+    }
+)
+
+-- обновить запись через ipython
+ans = requests.post("http://127.0.0.1:9200/table2/_doc/2BtlWIQBk88xwjZvtLhZ'", json = {
+    "text_field": "my pretty text",
+    "number": 16
+    }
+)
+
+
+-- 3 получить записи по условию через ipython
+ans = requests.get("http://127.0.0.1:9200/table/_search", json =
+{
+    "query": {
+        "bool": {
+            "filter": [
+                {
+                    "range": {
+                        "number": {
+                            "gt": 10
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+)
+
+
+--4 создаю новый индекс table3 с типом данных text - работает через ipython
+ans = requests.put("http://127.0.0.1:9200/table3", json =
+{
+    "mappings": {
+        "properties": {
+            "text_field": {"type": "text"},
+            "number": {"type": "long"}
+        }
+    }
+}
+)
+
+-- 5 заливаю данные через ipython в таблицу table3
+ans = requests.post("http://127.0.0.1:9200/table3/_doc/", json =
+{
+    "text_field": "my pretty text",
+    "number": 15
+}
+)
+---------------- вторая запись
+ans = requests.post("http://127.0.0.1:9200/table3/_doc/", json =
+{
+    "text_field": "my code is perfect",
+    "number": 16
+}
+)
+
+-----------3 запись
+ans = requests.post("http://127.0.0.1:9200/table3/_doc/", json =
+{
+    "text_field": "my white board",
+    "number": 17
+}
+)
+
+-- ищем записи по слову my
+ans = requests.get("http://127.0.0.1:9200/table3/_search", json=
+{
+    "query": {
+        "bool": {
+            "must": [
+                {"match": {"text_field": "my"}}
+            ]
+        }
+    }
+}
+)
+---- ищем записи по слову whit code
+ans = requests.get("http://127.0.0.1:9200/table3/_search", json=
+{
+    "query": {
+        "match": {
+            "text_field": {
+                "query": "whit code",
+                "fuzziness": "auto"
+            }
+        }
+    }
+}
+)
+
+
+-----8 загрузка данных пачкой
+ans = requests.get("http://127.0.0.1:9200/_bulk", json=
+{"index": {"_index": "movies", "_id": "my_id"}},
+{"field1": "1", "field2": "2"},
+{"index": {"_index": "movies", "_id": "my_id2"}},
+{"field1": "3", "field2": "4"}
+)
+
+curl -XPOST http://127.0.0.1:9200/_bulk -H 'Content-Type: application/x-ndjson' -d'
+{"index": {"_index": "movies", "_id": "my_id"}}
+{"field1": "1", "field2": "2"}
+{"index": {"_index": "movies", "_id": "my_id2"}}
+{"field1": "3", "field2": "4"}
+'
