@@ -2,7 +2,9 @@
 Повтор первого спринта чтобы отследить баги на новых названиях моделей. Также добавлен эластик  
 
 running:
+
 docker-compose build
+
 docker-compose up
 
 далее 1 РАЗ в контейнере postgres(тут название контейнера ) - в него нужно провалиться и выполнить скрипты из файла create_shema_and_tables.sql
@@ -11,7 +13,9 @@ docker-compose up
 
 
 #running
+
 docker-compose build
+
 docker-compose up
 
 проверить работу api через файл api_test
