@@ -24,8 +24,10 @@ docker-compose up
 
 
 I. Информация по ETL
+
 ETL в 2 вариациях, обе работают, в docker-compose.yml чтобы запустить 1 вариацию нужно раскоментировать блок etl и закоментировать etl_two, сейчас наоборот.
 Чтобы запустить файл etl в папке pg_to_es_two вне докера, нужно в settings поставить такие настройки 
+
 {
   "film_work_pg": {
     "host": "127.0.0.1",
@@ -82,9 +84,14 @@ class Genre_film_work:
 III.
 Важная теория по эластику
 #teory https://github.com/elastic/elasticsearch-py/blob/main/examples/bulk-ingest/bulk-ingest.py
+
 #teory good https://github.com/elastic/elasticsearch-py/issues/1698
+
 #bulk : https://towardsdatascience.com/how-to-index-elasticsearch-documents-with-the-bulk-api-in-python-b5bb01ed3824
+
 # https://sunscrapers.com/blog/elasticsearch-python-7-tips-best-practices/
+
 #первичная инициализация базы 
+
 docker exec -it postgres_movies2 bash где postgres_movies2 - имя контейнера с постгре
 -далее выполнить команды из create_shema_and_tables.sql
