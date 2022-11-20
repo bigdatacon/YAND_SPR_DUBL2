@@ -41,7 +41,7 @@ class ESSaver(Settings, Schemes):
     @backoff()
     def create_index(self, index_name: str, scheme: Optional[dict]=None):
         scheme_it = scheme if scheme else  self.get_schemes().get(index_name)
-        print(f'here scheme_it : {scheme_it}')
+        # print(f'here scheme_it : {scheme_it}')
         resp = requests.put("{}/{}".format(self.__get_es_link(), index_name), json=scheme_it)
         if resp.status_code != 200:
             logger.warning(f"Ошибка создания поискового индекса: {index_name}")
