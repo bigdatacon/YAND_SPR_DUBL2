@@ -65,11 +65,10 @@ def do_etl():
             logger.warning(f'except in main_loop : {e.args}')
 
 if __name__ == '__main__':
-
     # Блок для быстрого чтения и удаления индексов - чтобы проверить что все работает
-    persons = PGtoESPersons()
-    films = PGtoESFilms()
-    genres = PGtoESGenres()
+    # persons = PGtoESPersons()
+    # films = PGtoESFilms()
+    # genres = PGtoESGenres()
     """1. быстрое удаление индекса для проверки - потом удалить для персон """
     # index_name = 'persons_test'
     # print(f' eto personsle.read_index(index_name) : {persons.read_index(index_name)}')
@@ -84,6 +83,7 @@ if __name__ == '__main__':
     # index_name = 'genres_test'
     # print(f' eto genres.read_index(index_name) : {genres.read_index(index_name)}')
     # print(f' eto genres.del_index(index_name) : {genres.del_index(index_name)}')
+
     do_etl()
 
 

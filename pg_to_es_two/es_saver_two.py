@@ -41,12 +41,14 @@ class ESSaver(Settings, Schemes):
     @backoff()
     def create_index(self, index_name: str, scheme: Optional[dict]=None):
         scheme_it = scheme if scheme else  self.get_schemes().get(index_name)
-        # resp = requests.put("{}/{}".format(self.__get_es_link(), index_name), json=scheme_it)
-        # if resp.status_code != 200:
-        #     logger.warning(f"Ошибка создания поискового индекса: {index_name}")
-        # else:
-        #     print(f'создан индекс : {index_name}')
-        return self.__get_es_client().indices.create(index=index_name, **scheme_it)
+        print(f'here scheme_it : {scheme_it}')
+        resp = requests.put("{}/{}".format(self.__get_es_link(), index_name), json=scheme_it)
+        if resp.status_code != 200:
+            logger.warning(f"Ошибка создания поискового индекса: {index_name}")
+        else:
+            print(f'создан индекс : {index_name}')
+        #старый вариант работает вне докера
+        # return self.__get_es_client().indices.create(index=index_name, **scheme_it)
 
     def save_one(self, index_name, doc):
         return self.__get_es_client().bulk(index_name, doc)
@@ -139,7 +141,7 @@ if __name__ == "__main__":
     # helpers.bulk(example._ESSaver__get_es_client(), [{ "_id": random.randint(0, 100), **el}
     # for el in test_docs],
     # index=index)
-    print(example._ESSaver__search_index(index))
+    # print(example._ESSaver__search_index(index))
     print(f'here datetime.min : {datetime.min}')
     print(f'here datetime.min : {datetime.min.strftime("%Y-%m-%d %H:%M:%S.%f")}')
 
